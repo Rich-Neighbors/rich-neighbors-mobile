@@ -13,7 +13,7 @@ angular.module('app.services', [])
   var getCampaigns = function() {
     return $http({
       method: 'GET',
-      url: 'http://localhost:9000/api/campaigns/',
+      url: 'https://richneighbors-dev.herokuapp.com/',
       dataType: 'jsonp',
     }).then(function successCallback(response) {
       return response.data;
