@@ -26,7 +26,7 @@ function authInterceptor($rootScope, $q, $cookies, $injector, Util) {
   };
 }
 
-angular.module('bApp.auth')
+angular.module('app.auth')
   .factory('authInterceptor', authInterceptor);
 
 })();

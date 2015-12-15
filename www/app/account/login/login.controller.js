@@ -1,35 +1,33 @@
 'use strict';
 
-class LoginController {
-  //start-non-standard
-  user = {};
-  errors = {};
-  submitted = false;
+angular.module('app')
+  .controller('LoginController', function($scope, Auth, $state){
+    //start-non-standard
+  $scope.user = {};
+  $scope.errors = {};
+  $scope.submitted = false;
   //end-non-standard
 
-  constructor(Auth, $state) {
-    this.Auth = Auth;
-    this.$state = $state;
-  }
+  $scope.Auth = Auth;
+  $scope.$state = $state;
 
-  login(form) {
-    this.submitted = true;
+  $scope.login = function(form) {
+    $scope.submitted = true;
 
     if (form.$valid) {
-      this.Auth.login({
-        email: this.user.email,
-        password: this.user.password
+      $scope.Auth.login({
+        email: $scope.user.email,
+        password: $scope.user.password
       })
-      .then(() => {
+      .then(function() {
+        console.log('welcome');
         // Logged in, redirect to home
-        this.$state.go('main');
+        $scope.$state.go('main');
       })
-      .catch(err => {
-        this.errors.other = err.message;
+      .catch(function(err) {
+        $scope.errors.other = err.message;
       });
+      }
     }
-  }
-}
 
-angular.module('bApp')
-  .controller('LoginController', LoginController);
+  });

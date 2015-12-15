@@ -11,8 +11,8 @@ angular.module('app.routes', [])
         
     .state('login', {
       url: '/login',
-      templateUrl: 'app/account/login.html',
-      controller: 'loginCtrl'
+      templateUrl: 'app/account/login/login.html',
+      controller: 'login.controller'
     })
           
     .state('signup', {

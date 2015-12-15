@@ -27,5 +27,5 @@ class SettingsController {
   }
 }
 
-angular.module('bApp')
+angular.module('app')
   .controller('SettingsController', SettingsController);

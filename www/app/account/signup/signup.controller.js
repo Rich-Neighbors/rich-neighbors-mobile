@@ -39,5 +39,5 @@ class SignupController {
   }
 }
 
-angular.module('bApp')
+angular.module('app')
   .controller('SignupController', SignupController);

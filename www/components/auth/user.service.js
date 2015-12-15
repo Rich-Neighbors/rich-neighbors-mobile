@@ -22,7 +22,7 @@ function UserResource($resource) {
   });
 }
 
-angular.module('bApp.auth')
+angular.module('app.auth')
   .factory('User', UserResource);
 
 })();

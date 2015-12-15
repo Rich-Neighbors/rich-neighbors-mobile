@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('bApp.auth', [
-  'bApp.constants',
-  'bApp.util',
+angular.module('app.auth', [
+  'app.constants',
+  'app.util',
   'ngCookies',
   'ui.router'
 ])

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bApp')
+angular.module('app')
   .config(function($stateProvider) {
     $stateProvider
       .state('login', {
