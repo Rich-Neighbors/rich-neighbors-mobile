@@ -7,18 +7,18 @@
             <i class="icon ion-ios-location"></i>
         </div>
         <ion-list>
-
-            <a href="/#/tabs/campignid">
-                <ion-item class="item-thumbnail-left" ng-repeat="camp in campaigns">
-                    <img ng-src="{{camp.images}}">
+        <div style="margin: 0 auto; width:100px">
+                <ion-spinner icon="dots" ng-hide="loaded"></ion-spinner>
+        </div>
+                <ion-item class="item-thumbnail-left" collection-repeat="camp in campaigns" ng-click="viewCampaign(camp)">
+                    <img ng-src="{{camp.picture_url}}">
                     <h2>{{camp.title}}</h2>
                     <!-- <p>{{camp.description}}</p> -->
-                    <p>{{camp.total}}</p>
+                    <p>{{camp.goal | currency}}</p>
                     <p>{{camp.raised}}</p>
                     
                     <i id="like" ng-class="{'icon ion-ios7-heart': liked, 'icon ion-ios7-heart-outline': !liked}" ng-click="liked=!liked" ng-click="like(camp)"></i>
                 </ion-item>
-            </a>
 
         </ion-list>
     </ion-content>

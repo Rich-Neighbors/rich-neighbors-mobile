@@ -1,44 +1,19 @@
 <ion-view title="Campaign Profile">
     <ion-content overflow-scroll="true" padding="'true'" class="has-header">
-        <h1>{{description}}</h1>
+        <h1>{{campaign.title}}</h1>
         <ion-slide-box on-slide-changed="slideHasChanged($index)">
             <ion-slide>
                 <div class="box yellow">
                     <div class="item item-image">
-                        <img src="https://2dbdd5116ffa30a49aa8-c03f075f8191fb4e60e74b907071aee8.ssl.cf1.rackcdn.com/7343105_1449100258.4659_funddescription.jpg">
+                        <img ng-src="{{campaign.picutre_url}}">
                     </div>
                 </div>
             </ion-slide>
-            <ion-slide>
-                <div class="box pink">
-                    <div class="item item-image">
-                        <img src="https://2dbdd5116ffa30a49aa8-c03f075f8191fb4e60e74b907071aee8.ssl.cf1.rackcdn.com/7343105_1449101047.8559_funddescription.jpg">
-                    </div>
-                </div>
-            </ion-slide>
-            <ion-slide>
-                <div class="box yellow">
-                    <div class="item item-image">
-                        <img src="https://2dbdd5116ffa30a49aa8-c03f075f8191fb4e60e74b907071aee8.ssl.cf1.rackcdn.com/7343105_1449173858.03_funddescription.jpg">
-                    </div>
-                </div>
-            </ion-slide>
+            
         </ion-slide-box>
         <div class="card">
             <div class="item item-text-wrap update">
-                <h2>Update: Hi everyone!</h2>
-                <p>Two weeks ago I was confronted with the news that I have a GBM – IV (brain cancer). Since then I’ve had massive brain surgery and learnt of my scary diagnosis.</p>
-                <br>
-                <p>I was then confronted with the necessary treatment and huge costs involved, with no way to pay for it. For the past seven days I’ve seen something else happen in my life that I could never imagined… the incredible Generosity, Love and Selfless donations to Help Save My Life. </p>
-                <br>
-                <p>To all the people who have read my story, shared my story, especially prayed for me and those who have donated, I cannot thank you enough </p>
-                <br>
-                <p>You’ve truly touched my heart and soul in such a good way that it has given me so much faith, hope and courage to fight and survive. </p>
-                <br>
-                <p>I feel truly blessed, and you’ve all made it even easier to loving every day of my life and to will enjoy every blessings and day of my Life. </p>
-                <br>
-                <p>THANK YOU GOD BLESS ALL OF YOU!</p>
-                <br>
+                <p>{{campaign.description}}</p>
             </div>
         </div>
         <div class="list">

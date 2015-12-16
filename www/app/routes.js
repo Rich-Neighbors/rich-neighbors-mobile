@@ -59,11 +59,13 @@ angular.module('app.routes', [])
   })
 
   .state('tabsController.campaignProfile', {
-    url: '/campignid',
+    url: '/campign/:id',
     views: {
       'tab12': {
         templateUrl: 'app/campaign/campaignProfile.html',
-        controller: 'campaignProfileCtrl'
+        controller: 'campaignProfileCtrl',
+        params: ['id'],
+        
       }
     }
   })
