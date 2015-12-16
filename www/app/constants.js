@@ -1,5 +1,7 @@
 angular.module('app')
 
+.constant('HOST_URL', 'http://localhost:9000')
+
 .constant('AUTH_EVENTS', {
 	notAuthenticated: 'auth-not-authenticated',
 	notAuthorized: 'auth-not-authorized'

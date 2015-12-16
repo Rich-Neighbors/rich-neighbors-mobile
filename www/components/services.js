@@ -1,6 +1,6 @@
 angular.module('app')
  
-.service('AuthService', function($q, $http, USER_ROLES) {
+.service('AuthService', function($q, $http, USER_ROLES, HOST_URL) {
   var LOCAL_TOKEN_KEY = 'yourTokenKey';
   var username = '';
   var isAuthenticated = false;
@@ -32,7 +32,7 @@ angular.module('app')
     }
  
     // Set the token as header for your requests!
-    $http.defaults.headers.common['X-Auth-Token'] = token;
+    //$http.defaults.headers.common['X-Auth-Token'] = token;
   }
  
   function destroyUserCredentials() {
@@ -43,8 +43,31 @@ angular.module('app')
     window.localStorage.removeItem(LOCAL_TOKEN_KEY);
   }
  
-  var login = function(name, pw) {
+  var login = function(email, password) {
+
+        return $http.post( HOST_URL + '/auth/local', {
+        email: email,
+        password: password
+      })
+      .then(function(res) {
+        console.log(res);
+        storeUserCredentials(email + res.data.token);
+        console.log('Login success.');
+        
+        //$cookies.put('token', res.data.token);
+        // currentUser = User.get();
+        // return currentUser.$promise;
+        
+      })
+      .catch(function(err) {
+
+        //Auth.logout();
+        //safeCb(callback)(err.data);
+        //return $q.reject(err.data);
+      });
+    /*
     return $q(function(resolve, reject) {
+
       if ((name == 'admin' && pw == '1') || (name == 'user' && pw == '1')) {
         // Make a request and receive your auth token from your server
         storeUserCredentials(name + '.yourServerToken');
@@ -53,7 +76,31 @@ angular.module('app')
         reject('Login Failed.');
       }
     });
+  */
   };
+
+  // example from webapp
+
+  // login: function(user, callback) {
+  //     return $http.post('/auth/local', {
+  //       email: user.email,
+  //       password: user.password
+  //     })
+  //     .then(function(res) {
+  //       $cookies.put('token', res.data.token);
+  //       currentUser = User.get();
+  //       return currentUser.$promise;
+  //     })
+  //     .then(function(user) {
+  //       safeCb(callback)(null, user);
+  //       return user;
+  //     })
+  //     .catch(function(err) {
+  //       Auth.logout();
+  //       safeCb(callback)(err.data);
+  //       return $q.reject(err.data);
+  //     });
+  //   },
  
   var logout = function() {
     destroyUserCredentials();
