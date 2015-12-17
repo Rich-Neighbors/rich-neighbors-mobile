@@ -57,6 +57,7 @@ angular.module('app')
         console.log(res);
         storeUserCredentials(email + res.data.token);
         console.log('Login success.');
+        //console.log('callback',callback())
         
         $state.go('tabsController.home', {}, {
           reload: true

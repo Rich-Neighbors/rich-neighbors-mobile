@@ -1,10 +1,12 @@
-angular.module('app').controller('campaignProfileCtrl', function($scope, $stateParams, Campaign) {
+angular.module('app').controller('campaignProfileCtrl', function($scope, $stateParams, $state, Campaign) {
   $scope.description = "Save Thaline's Life";
   $scope.raised = 79417;
   $scope.total = 115000;
-  console.log('hi');
   $scope.campaign = Campaign.selectedCampaign;
-  console.log($scope.campaign);
+  console.log('test',$scope.campaign);
+  $state.go('tabsController.campaignProfile', Campaign.selectedCampaign, {
+          reload: true
+        });
 
 
 

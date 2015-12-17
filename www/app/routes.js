@@ -59,7 +59,7 @@ angular.module('app.routes', [])
   })
 
   .state('tabsController.campaignProfile', {
-    url: '/campign/:id',
+    url: '/campaign/:id',
     views: {
       'tab12': {
         templateUrl: 'app/campaign/campaignProfile.html',
