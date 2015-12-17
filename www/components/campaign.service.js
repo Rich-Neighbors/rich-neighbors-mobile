@@ -1,8 +1,6 @@
 angular.module('app.services', [])
 
-.factory('Campaign', ['$http', function($http) {
-
-
+.factory('Campaign', ['$http', 'HOST_URL', function($http, HOST_URL) {
 
   var campaigns = [];
   var selectedCampaign = {};
@@ -14,8 +12,8 @@ angular.module('app.services', [])
   var getCampaigns = function() {
     return $http({
       method: 'GET',
-      url: 'http://localhost:9000/api/campaigns',
-      // dataType: 'application/json',
+      url: HOST_URL + '/api/campaigns/',
+      dataType: 'application/json',
     }).then(function successCallback(response) {
       return response.data;
     }, function errorCallback(response) {
