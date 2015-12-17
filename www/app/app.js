@@ -33,7 +33,8 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
     }
  
     if (!AuthService.isAuthenticated()) {
-      if (next.name !== 'login') {
+      if (next.name !== 'login' && next.name !== 'tabsController.home'
+        && next.name !== 'tabsController.campaignProfile') {
         event.preventDefault();
         $state.go('login');
       }

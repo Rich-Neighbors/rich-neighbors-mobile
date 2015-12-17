@@ -1,6 +1,6 @@
 angular.module('app')
 
-.constant('HOST_URL', 'http://localhost:9000')
+.constant('HOST_URL', 'https://richneighbors-dev.herokuapp.com')
 
 .constant('AUTH_EVENTS', {
 	notAuthenticated: 'auth-not-authenticated',
@@ -9,5 +9,5 @@ angular.module('app')
 
 .constant('USER_ROLES', {
 	admin: 'admin_role',
-	public: 'pbulic_role'
+	public: 'pulic_role'
 });

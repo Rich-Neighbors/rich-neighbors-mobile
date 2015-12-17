@@ -1,10 +1,11 @@
 angular.module('app').controller('homeCtrl', function($scope, $state, $http, Campaign) {
   $scope.campaigns = [];
   $scope.loaded = false;
+
   Campaign.getCampaigns().then(function(data){
     $scope.campaigns = data;
     $scope.loaded = true;
-    console.log(data);
+    //console.log(data);
   });
 
   $scope.viewCampaign = function(campaign){
