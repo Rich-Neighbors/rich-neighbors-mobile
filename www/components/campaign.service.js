@@ -5,6 +5,7 @@ angular.module('app.services', [])
 
 
   var campaigns = [];
+  var selectedCampaign = {};
 
   var createCampaign = function(newCampaign) {
     campaigns.push(newCampaign);
@@ -13,12 +14,23 @@ angular.module('app.services', [])
   var getCampaigns = function() {
     return $http({
       method: 'GET',
-      url: 'http://localhost:9000/api/campaigns/',
-      dataType: 'jsonp',
+      url: 'http://localhost:9000/api/campaigns',
+      // dataType: 'application/json',
     }).then(function successCallback(response) {
       return response.data;
     }, function errorCallback(response) {
+      console.log(response);
       //handle error
+    });
+  };
+
+  var getCampaign = function(id){
+    console.log(id);
+    campaigns.forEach(function(campaign){
+      //console.log(campaign._id);
+      if (campaign._id === id){
+        return campaign;
+      }
     });
   };
 
@@ -31,7 +43,9 @@ angular.module('app.services', [])
   return {
     campaigns: campaigns,
     createCampaign: createCampaign, 
-    getCampaigns: getCampaigns
+    getCampaigns: getCampaigns,
+    getCampaign: getCampaign,
+    selectedCampaign: selectedCampaign
   };
 
 }]);
