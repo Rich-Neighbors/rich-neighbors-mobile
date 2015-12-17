@@ -1,6 +1,6 @@
 <ion-view title="Campaign Profile">
     <ion-content overflow-scroll="true" padding="'true'" class="has-header">
-        <h1>{{description}}</h1>
+        <h1 style="text-align: center">{{description}}</h1>
         <ion-slide-box on-slide-changed="slideHasChanged($index)">
             <ion-slide>
                 <div class="box yellow">
@@ -24,6 +24,38 @@
                 </div>
             </ion-slide>
         </ion-slide-box>
+        <style>
+        .meter {
+            height: 20px;
+            /* Can be anything */
+            position: relative;
+            background: #555;
+            -moz-border-radius: 25px;
+            -webkit-border-radius: 25px;
+            border-radius: 25px;
+            padding: 10px;
+            box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+        }
+        
+        .meter > span {
+            display: block;
+            height: 100%;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            background-color: rgb(43, 194, 83);
+            background-image: linear-gradient( center bottom, rgb(43, 194, 83) 37%, rgb(84, 240, 84) 69%);
+            box-shadow: inset 0 2px 9px rgba(255, 255, 255, 0.3), inset 0 -2px 6px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        </style>
+        <div class="card">
+            <div class="meter">
+                <span style="width: 25%"></span>
+            </div>
+        </div>
         <div class="card">
             <div class="item item-text-wrap update">
                 <h2>Update: Hi everyone!</h2>
@@ -44,33 +76,39 @@
         <div class="list">
             <a class="item item-avatar" href="#">
                 <img src="https://scontent.xx.fbcdn.net/hprofile-xtp1/v/t1.0-1/p320x320/11391432_10203832951975075_4543799157993077748_n.jpg?oh=f5d82f3673bdb64f2283e0f65efc078a&oe=5720CECA">
-                <h2>Maria Fretes</h2><h1>$125</h1>
+                <h2>Maria Fretes</h2>
+                <h1>$125</h1>
                 <p>Estou aqui torcendo p sua recuperação!!! Q o papai do céu e os anjinhos te protejam nesse momento!! Um gde bjo</p>
             </a>
-            <a class="item item-avatar" href="#">               
-            <img src="http://static.sched.org/a6/2084003/avatar.jpg.320x320px.jpg?741">
-                <h2>Donald Trump</h2><h2>$65</h2>
+            <a class="item item-avatar" href="#">
+                <img src="http://static.sched.org/a6/2084003/avatar.jpg.320x320px.jpg?741">
+                <h2>Donald Trump</h2>
+                <h2>$65</h2>
             </a>
             <a class="item item-avatar" href="#">
-                <h2>Jorge Medoza</h2><h2>$30</h2>
+                <h2>Jorge Medoza</h2>
+                <h2>$30</h2>
                 <p>6 hours ago</p>
             </a>
         </div>
         <div>
-            <h3>Join this campaign:</h3>
+            <h3 style="text-align: center">Join this campaign:</h3>
         </div>
         <div class="button-bar">
             <a href="#/donatemoney" class="button button-balanced button-block  icon ">Money</a>
             <a href="#/volunteer" class="button button-balanced button-block ">Time</a>
             <a href="#/supplylist" class="button button-balanced button-block ">Supplies</a>
         </div>
-        <a href="#/success" class="button button-positive button-block button-large">Share This Campaign</a>
+        <div>
+            <h3 style="text-align: center">Share:</h3>
+        </div>
+        <div class="button-bar">
+            <a href="http://www.twitter.com/KingJames" class="button button-calm button-block icon ion-social-twitter"></a>
+            <a href="http://www.facebook.com/LeBron" class="button button-positive button-block icon ion-social-facebook"></a>
+            <a href="http://www.instagram.com/kingjames/" class="button button-royal button-block icon ion-social-instagram"></a>
+        </div>
     </ion-content>
 </ion-view>
-
-
-
-
 <!-- 
 item avatars, profile lists:
 <div class="list">
@@ -104,8 +142,6 @@ item thumbnail:
 
 </div>
  -->
-
-
 <!-- 
 card list buttons: 
 <div class="list card">
@@ -132,7 +168,6 @@ card list buttons:
 
 </div>
  -->
-
 <!-- image card:
 <div class="list card">
 
@@ -153,7 +188,6 @@ card list buttons:
 
 </div>
  -->
-
 <!-- 
 <ion-view title="Campaign Profile">
     <ion-content overflow-scroll="true" padding="'true'" class="has-header">
