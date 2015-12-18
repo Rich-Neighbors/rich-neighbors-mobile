@@ -1,11 +1,18 @@
 <ion-view title="Rich Neighbors">
     <ion-content overflow-scroll="true" padding="'true'" class="has-header">
-        <h4>Welcome to {{location}}</h4>
+        <!-- <h4>Welcome to {{location}}</h4> -->
+        
         <div class="item range">
             Location:
             <input type="range" name="volume">
             <i class="icon ion-ios-location"></i>
         </div>
+        
+        <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="getCampaigns()">
+        </ion-refresher>
+        
         <ion-list>
         <div style="margin: 0 auto; width:100px">
                 <ion-spinner icon="dots" ng-hide="loaded"></ion-spinner>

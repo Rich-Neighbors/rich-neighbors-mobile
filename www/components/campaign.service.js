@@ -15,6 +15,7 @@ angular.module('app.services', [])
       url: HOST_URL + '/api/campaigns/',
       dataType: 'application/json',
     }).then(function successCallback(response) {
+      campaigns = response.data;
       return response.data;
     }, function errorCallback(response) {
       console.log(response);

@@ -1,11 +1,33 @@
 angular.module('app')
  
 .service('AuthService', function($q, $http, $ionicPopup, $state, USER_ROLES, HOST_URL) {
-  var LOCAL_TOKEN_KEY = 'yourTokenKey';
+  var LOCAL_TOKEN_KEY = 'token';
   var username = '';
   var isAuthenticated = false;
   var role = '';
   var authToken;
+  var currentUser = {};
+
+
+
+
+  var getCurrentUser = function(){
+    $http({
+      method: 'GET',
+      url: HOST_URL + '/api/users/me?access_token=' + window.localStorage.getItem(LOCAL_TOKEN_KEY),
+      dataType: 'application/json',
+    }).then(function(res){
+      console.log('success');
+      currentUser = res.data;
+      console.log(res.data);
+    }, function(err){
+      console.error(err);
+    });
+  };
+
+  if (window.localStorage.getItem(LOCAL_TOKEN_KEY)){
+    getCurrentUser();
+  }
  
   function loadUserCredentials() {
     var token = window.localStorage.getItem(LOCAL_TOKEN_KEY);
@@ -14,18 +36,18 @@ angular.module('app')
     }
   }
  
-  function storeUserCredentials(token) {
+  function storeUserCredentials(username, token) {
     window.localStorage.setItem(LOCAL_TOKEN_KEY, token);
-    console.log('local', window.localStorage.getItem(LOCAL_TOKEN_KEY));
-    useCredentials(token);
+    useCredentials(username, token);
+    getCurrentUser();
   }
  
-  function useCredentials(token) {
-    username = token.split('.')[0];
+  function useCredentials(username, token) {
+    username = token;
     isAuthenticated = true;
     authToken = token;
     
-    // TODO: real role determination
+    // TODO: add real role determination
     if (username == 'admin') {
       role = USER_ROLES.admin;
     }
@@ -35,15 +57,18 @@ angular.module('app')
  
     // Set the token as header for your requests!
     //$http.defaults.headers.common['X-Auth-Token'] = token;
-    $http.defaults.headers.common['access_token'] = token;
+    //$http.defaults.headers.common['access_token'] = token;
+    //$http.defaults.headers.common['Authorization'] = 'Bearer' + token;
   }
  
   function destroyUserCredentials() {
     authToken = undefined;
     username = '';
+    currentUser = {};
     isAuthenticated = false;
-    $http.defaults.headers.common['X-Auth-Token'] = undefined;
+    //$http.defaults.headers.common['X-Auth-Token'] = undefined;
     $http.defaults.headers.common['access_token'] = undefined;
+    $http.defaults.headers.common['Authorization'] = undefined;
     window.localStorage.removeItem(LOCAL_TOKEN_KEY);
   }
  
@@ -55,7 +80,7 @@ angular.module('app')
       })
       .then(function(res) {
         console.log(res);
-        storeUserCredentials(email + res.data.token);
+        storeUserCredentials(email, res.data.token);
         console.log('Login success.');
         //console.log('callback',callback())
         
@@ -131,7 +156,8 @@ angular.module('app')
     isAuthorized: isAuthorized,
     isAuthenticated: function() {return isAuthenticated;},
     username: function() {return username;},
-    role: function() {return role;}
+    role: function() {return role;},
+    currentUser: function(){ return currentUser; }
   };
 })
 

@@ -2,14 +2,16 @@
 
 (function() {
 
-function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
+function AuthService($location, $http, $q, appConfig, Util, User) {
   var safeCb = Util.safeCb;
   var currentUser = {};
-  var userRoles = appConfig.userRoles || [];
+  //var userRoles = appConfig.userRoles || [];
 
+  /*
   if ($cookies.get('token') && $location.path() !== '/logout') {
     currentUser = User.get();
   }
+  */
 
   var Auth = {
 
@@ -27,11 +29,14 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
       })
       .then(function(res) {
         $cookies.put('token', res.data.token);
+        console.log(res);
         currentUser = User.get();
+
         return currentUser.$promise;
       })
       .then(function(user) {
         safeCb(callback)(null, user);
+        console.log(user);
         return user;
       })
       .catch(function(err) {
@@ -183,7 +188,7 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
   return Auth;
 }
 
-angular.module('app.auth')
+angular.module('app')
   .factory('Auth', AuthService);
 
 })();
