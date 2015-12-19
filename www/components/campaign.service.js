@@ -1,13 +1,10 @@
 angular.module('app.services', [])
 
-.factory('Campaign', ['$http', 'HOST_URL', function($http, HOST_URL) {
+.factory('Campaign', ['$http', 'HOST_URL', 'AuthService', function($http, HOST_URL, AuthService) {
 
   var campaigns = [];
   var selectedCampaign = {};
 
-  var createCampaign = function(newCampaign) {
-    campaigns.push(newCampaign);
-  };
 
   var getCampaigns = function(id) {
     id = id || '';
@@ -24,14 +21,17 @@ angular.module('app.services', [])
     });
   };
 
-  var getCampaign = function(id){
-    console.log(id);
-    campaigns.forEach(function(campaign){
-      //console.log(campaign._id);
-      if (campaign._id === id){
-        return campaign;
-      }
-    });
+  var createCampaign = function(newCampaign) {
+    var user = AuthService.currentUser();
+    newCampaign.user = user._id;
+    console.log(user);
+    $http.post(HOST_URL + '/api/campaigns?access_token=' + window.localStorage.getItem('token') + '&user=' + user._id, newCampaign)
+      .success(function(data) {
+        console.log(data);
+      })
+      .error(function(data){
+        console.log(data);
+      });
   };
 
   // initial load of campaigns
@@ -42,9 +42,8 @@ angular.module('app.services', [])
 
   return {
     campaigns: campaigns,
-    createCampaign: createCampaign, 
+    createCampaign: createCampaign,
     getCampaigns: getCampaigns,
-    getCampaign: getCampaign,
     selectedCampaign: selectedCampaign
   };
 
