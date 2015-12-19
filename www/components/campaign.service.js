@@ -9,10 +9,11 @@ angular.module('app.services', [])
     campaigns.push(newCampaign);
   };
 
-  var getCampaigns = function() {
+  var getCampaigns = function(id) {
+    id = id || '';
     return $http({
       method: 'GET',
-      url: HOST_URL + '/api/campaigns/',
+      url: HOST_URL + '/api/campaigns/' + id,
       dataType: 'application/json',
     }).then(function successCallback(response) {
       campaigns = response.data;

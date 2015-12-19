@@ -5,4 +5,8 @@ angular.module('app').controller('loginCtrl', function($scope, AuthService, $ion
     AuthService.login(data.username, data.password);
   };
 
+  $scope.facebookLogin = function() {
+  	//TODO
+  };
+
 });

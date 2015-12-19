@@ -17,19 +17,17 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
   };
 
   $scope.createCampaign = function(){
-    //Campaign.createCampaign(newCampaign);
     console.log('campaign saved');
     Campaign.selectedCampaign = $scope.newCampaign;
     $scope.viewCampaign($scope.newCampaign);
     Campaign.campaigns.push($scope.newCampaign);
   };
 
-  //run view after created
+  //run view after created - pass campaign id in url
   $scope.viewCampaign = function(campaign){
     console.log(campaign);
     
     $state.go('tabsController.campaignProfile' );
   };
 
-  //createCampaign();
 });
