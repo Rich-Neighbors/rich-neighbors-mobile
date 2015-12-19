@@ -1,10 +1,12 @@
 angular.module('app.directives', [])
 
 
-
 .directive('blankDirective', [function(){
 
 }]);
+
+/*
+
 
 IonicModule
 .directive('ionSlideBox', [
@@ -155,6 +157,7 @@ function($animate, $timeout, $compile, $ionicSlideBoxDelegate, $ionicHistory, $i
     }
   };
 }])
+
 .directive('ionSlide', function() {
   return {
     restrict: 'E',
@@ -197,6 +200,7 @@ function($animate, $timeout, $compile, $ionicSlideBoxDelegate, $ionicHistory, $i
       });
     }
   };
+  
 
 });
-
+*/

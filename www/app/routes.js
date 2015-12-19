@@ -2,14 +2,9 @@ angular.module('app.routes', [])
 
 .config(function($stateProvider, $urlRouterProvider) {
 
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
-
   $stateProvider
 
-    .state('login', {
+  .state('login', {
     url: '/login',
     templateUrl: 'app/account/login/login.html',
     controller: 'loginCtrl'
@@ -17,7 +12,7 @@ angular.module('app.routes', [])
 
   .state('signup', {
     url: '/signup',
-    templateUrl: 'app/account/signup.html',
+    templateUrl: 'app/account/signup/signup.html',
     controller: 'signupCtrl'
   })
 
@@ -59,9 +54,9 @@ angular.module('app.routes', [])
   })
 
   .state('tabsController.campaignProfile', {
-    url: '/campign/:id',
+    url: '/campaign/:id',
     views: {
-      'tab12': {
+      'tab8': {
         templateUrl: 'app/campaign/campaignProfile.html',
         controller: 'campaignProfileCtrl',
         params: ['id'],
@@ -74,8 +69,8 @@ angular.module('app.routes', [])
     url: '/userAccount',
     views: {
       'tab11': {
-        templateUrl: 'app/account/myAccount.html',
-        controller: 'myAccountCtrl'
+        templateUrl: 'app/account/settings/settings.html',
+        controller: 'settingsCtrl'
       }
     }
   })
@@ -102,7 +97,7 @@ angular.module('app.routes', [])
     url: '/donatemoney',
     templateUrl: 'components/donateMoney.html',
     controller: 'donateMoneyCtrl'
-  });
+  })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise(function($injector, $location){
@@ -111,8 +106,3 @@ angular.module('app.routes', [])
   });
 
 });
-
-// ngMocks code - not working
-// .run(function($httpBackend){
-//   $httpBackend.whenGET(/templates\/\w+.*/).passThrough();
-// });
