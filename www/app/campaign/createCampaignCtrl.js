@@ -7,7 +7,8 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
     total: '',
     raised: '0',
     description: '',
-    images: '',
+    picture_url: 'https://pbs.twimg.com/media/BwsrTjGIcAAtjdu.png',
+    created_at: Date.now(),
     ip_address: '',
     supplies: '',
     volunteer: '',
@@ -16,9 +17,15 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
   };
 
   $scope.createCampaign = function(){
-    Campaign.createCampaign(newCampaign);
-    console.log('campaign saved');
+    Campaign.createCampaign($scope.newCampaign);
+    $scope.viewCampaign($scope.newCampaign);
   };
 
-  //createCampaign();
+  //run view after created - pass campaign id in url
+  $scope.viewCampaign = function(campaign){
+    console.log(campaign);
+    
+    $state.go('tabsController.campaignProfile' );
+  };
+
 });
