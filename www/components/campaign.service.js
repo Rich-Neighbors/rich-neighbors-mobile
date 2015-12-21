@@ -7,10 +7,15 @@ angular.module('app.services', [])
 
 
   var getCampaigns = function(id) {
+    var apiUrl = '/api/campaigns/';
     id = id || '';
+    if (id === 'me'){
+      id = '';
+      apiUrl = '/api/users/me/campaigns';
+    }
     return $http({
       method: 'GET',
-      url: HOST_URL + '/api/campaigns/' + id,
+      url: HOST_URL + apiUrl + id + AuthService.authParams(),
       dataType: 'application/json',
     }).then(function successCallback(response) {
       campaigns = response.data;
@@ -22,9 +27,6 @@ angular.module('app.services', [])
   };
 
   var createCampaign = function(newCampaign, volunteers, supplies) {
-    //var user = AuthService.currentUser();
-    //newCampaign.user = user._id;
-    console.log('params', AuthService.authParams());
     return $http.post(HOST_URL + '/api/campaigns' + AuthService.authParams(), newCampaign)
       .success(function(data){
         console.log('campaign res:', data);
@@ -34,7 +36,7 @@ angular.module('app.services', [])
           volunteer['campaign_id'] = campaign_id;
           $http.post(HOST_URL + '/api/volunteers' + AuthService.authParams(), volunteer)
             .success(function(data){
-              console.log('saved', data);
+              console.log('volunteer', data);
             })
             .error(function(err){
               console.error(err);
@@ -45,7 +47,7 @@ angular.module('app.services', [])
           item['campaign_id'] = campaign_id;
           $http.post(HOST_URL + '/api/items' + AuthService.authParams(), item)
             .success(function(data){
-              console.log('saved', data);
+              console.log('item', data);
             })
             .error(function(err){
               console.error(err);
