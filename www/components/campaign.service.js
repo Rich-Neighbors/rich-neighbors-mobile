@@ -21,16 +21,40 @@ angular.module('app.services', [])
     });
   };
 
-  var createCampaign = function(newCampaign) {
-    var user = AuthService.currentUser();
-    newCampaign.user = user._id;
-    console.log(user);
-    $http.post(HOST_URL + '/api/campaigns?access_token=' + window.localStorage.getItem('token') + '&user=' + user._id, newCampaign)
-      .success(function(data) {
-        console.log(data);
+  var createCampaign = function(newCampaign, volunteers, supplies) {
+    //var user = AuthService.currentUser();
+    //newCampaign.user = user._id;
+    console.log('params', AuthService.authParams());
+    return $http.post(HOST_URL + '/api/campaigns' + AuthService.authParams(), newCampaign)
+      .success(function(data){
+        console.log('campaign res:', data);
+        var campaign_id = data._id;
+        //add volunteers
+        volunteers.forEach(function(volunteer){
+          volunteer['campaign_id'] = campaign_id;
+          $http.post(HOST_URL + '/api/volunteers' + AuthService.authParams(), volunteer)
+            .success(function(data){
+              console.log('saved', data);
+            })
+            .error(function(err){
+              console.error(err);
+            });
+        });
+        //add supplies
+        supplies.forEach(function(item){
+          item['campaign_id'] = campaign_id;
+          $http.post(HOST_URL + '/api/items' + AuthService.authParams(), item)
+            .success(function(data){
+              console.log('saved', data);
+            })
+            .error(function(err){
+              console.error(err);
+            });
+        });
       })
-      .error(function(data){
-        console.log(data);
+      .error(function(err){
+        console.log('Failed to save campaign');
+        console.error(err);
       });
   };
 
