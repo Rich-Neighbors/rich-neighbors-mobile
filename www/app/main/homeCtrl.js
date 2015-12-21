@@ -19,5 +19,6 @@ angular.module('app').controller('homeCtrl', function($scope, $state, $http, Cam
 
   //initial loading of campaigns
   $scope.getCampaigns();
+  $state.go('tabsController.home');
 
 }); 

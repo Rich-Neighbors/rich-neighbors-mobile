@@ -26,6 +26,16 @@ angular.module('app.services', [])
     });
   };
 
+  var deleteCampaign = function(id){
+    return $http.delete(HOST_URL + '/api/campaigns/' + id + AuthService.authParams() + '&user=' + AuthService.currentUser())
+      .success(function(data){
+        console.log(data);
+      })
+      .error(function(err){
+        console.error(err);
+      });
+  };
+
   var createCampaign = function(newCampaign, volunteers, supplies) {
     return $http.post(HOST_URL + '/api/campaigns' + AuthService.authParams(), newCampaign)
       .success(function(data){
@@ -70,6 +80,7 @@ angular.module('app.services', [])
     campaigns: campaigns,
     createCampaign: createCampaign,
     getCampaigns: getCampaigns,
+    deleteCampaign: deleteCampaign,
     selectedCampaign: selectedCampaign
   };
 
