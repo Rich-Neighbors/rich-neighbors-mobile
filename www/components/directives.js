@@ -1,7 +1,12 @@
 angular.module('app.directives', [])
 
 
-.directive('blankDirective', [function(){
+.directive('viewCampaign', [function(){
+  return {
+    restrict: 'AE',
+    scope: true,
+    templateUrl: 'components/viewCampaign.html',
+  };
 
 }]);
 

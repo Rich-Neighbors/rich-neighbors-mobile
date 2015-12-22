@@ -1,18 +1,20 @@
-angular.module('app').controller('campaignProfileCtrl', function($scope, $stateParams, $state, Campaign, AuthService) {
+angular.module('app').controller('campaignProfileCtrl', function($scope, $stateParams, $state, $ionicHistory, Campaign, AuthService) {
 
   $scope.campaign = {};
+  console.log('params', $stateParams);
   
   $scope.isOwner = function(){
-    var currentUser = AuthService.currentUser();
-    return $scope.ownerId === currentUser._id;
+    var currentUserId = AuthService.getCurrentUser()._id;
+    return $scope.ownerId === currentUserId;
   };
 
   $scope.getCampaign = function(){
     $scope.id = $stateParams.id;
-    console.log('id',$scope.id)
     Campaign.getCampaigns($scope.id).then(function(campaign){
       $scope.campaign = campaign;
-      $scope.ownerId = campaign.user_id._id;
+      if (campaign.user_id) {
+        $scope.ownerId = campaign.user_id._id;
+      }
       $scope.loaded = true;
       $scope.$broadcast('scroll.refreshComplete');
     });
@@ -21,6 +23,7 @@ angular.module('app').controller('campaignProfileCtrl', function($scope, $stateP
   $scope.deleteCampaign = function(){
     //add an "are you sure" popup
     Campaign.deleteCampaign($scope.id);
+    $state.go($ionicHistory.backView().stateName, {}, {reload: true});
   };
 
   $scope.getCampaign();

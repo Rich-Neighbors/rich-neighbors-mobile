@@ -25,30 +25,11 @@ angular.module('app.routes', [])
 
   .state('tabsController.home', {
     url: '/home',
+    parent: 'tabsController',
     views: {
-      'tab8': {
+      'homeTab': {
         templateUrl: 'app/main/home.html',
         controller: 'homeCtrl'
-      }
-    }
-  })
-
-  .state('tabsController.myCampaigns', {
-    url: '/mycampaign',
-    views: {
-      'tab9': {
-        templateUrl: 'app/campaign/myCampaigns.html',
-        controller: 'myCampaignsCtrl'
-      }
-    }
-  })
-
-  .state('tabsController.createCampaign', {
-    url: '/startcampaign',
-    views: {
-      'tab10': {
-        templateUrl: 'app/campaign/createCampaign.html',
-        controller: 'createCampaignCtrl'
       }
     }
   })
@@ -56,19 +37,68 @@ angular.module('app.routes', [])
   .state('tabsController.campaignProfile', {
     url: '/campaign/:id',
     views: {
-      'tab8': {
+      'homeTab@tabsController': {
         templateUrl: 'app/campaign/campaignProfile.html',
         controller: 'campaignProfileCtrl',
-        params: ['id'],
+        params: ['id']
+        
         
       }
     }
   })
 
+  .state('tabsController.myCampaigns', {
+    url: '/mycampaign',
+    parent: 'tabsController',
+    views: {
+      'myTab': {
+        templateUrl: 'app/campaign/myCampaigns.html',
+        controller: 'myCampaignsCtrl'
+      }
+    }
+  })
+
+  .state('tabsController.myCampaignProfile', {
+    url: '/mycampaign/:id',
+    views: {
+      'myTab@tabsController': {
+        templateUrl: 'app/campaign/campaignProfile.html',
+        controller: 'campaignProfileCtrl',
+        params: ['id'],
+      }
+    }
+  })
+
+  .state('tabsController.createCampaign', {
+    url: '/startcampaign',
+    parent: 'tabsController',
+    views: {
+      'createTab': {
+        templateUrl: 'app/campaign/createCampaign.html',
+        controller: 'createCampaignCtrl'
+      }
+    }
+  })
+
+  .state('tabsController.newCampaignProfile', {
+    url: '/newcampaign/:id',
+    views: {
+      'createTab@tabsController': {
+        templateUrl: 'app/campaign/campaignProfile.html',
+        controller: 'campaignProfileCtrl',
+        params: ['id']
+        
+        
+      }
+    }
+  })
+
+
+
   .state('tabsController.myAccount', {
     url: '/userAccount',
     views: {
-      'tab11': {
+      'settingsTab': {
         templateUrl: 'app/account/settings/settings.html',
         controller: 'settingsCtrl'
       }

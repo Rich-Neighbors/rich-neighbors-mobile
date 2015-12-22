@@ -1,6 +1,7 @@
 angular.module('app').controller('homeCtrl', function($scope, $state, $http, Campaign) {
   $scope.campaigns = [];
   $scope.loaded = false;
+
   
   $scope.getCampaigns = function(){
     Campaign.getCampaigns().then(function(data){
@@ -19,6 +20,5 @@ angular.module('app').controller('homeCtrl', function($scope, $state, $http, Cam
 
   //initial loading of campaigns
   $scope.getCampaigns();
-  $state.go('tabsController.home');
 
 }); 

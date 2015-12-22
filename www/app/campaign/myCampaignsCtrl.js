@@ -16,7 +16,7 @@ angular.module('app').controller('myCampaignsCtrl', function($scope, $state, Cam
   $scope.viewCampaign = function(campaign){
   	//console.log(campaign._id);
     //TODO: send loaded campaign to avoid display lag
-  	$state.go('tabsController.campaignProfile', {id: campaign._id, campaign: campaign} );
+  	$state.go('tabsController.myCampaignProfile', {id: campaign._id} );
   };
 
   $scope.getCampaigns('me');

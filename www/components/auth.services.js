@@ -22,6 +22,9 @@ angular.module('app')
 
 
   var getCurrentUser = function() {
+    if (currentUser !== undefined){
+      return currentUser;
+    }
     $http({
       method: 'GET',
       url: HOST_URL + '/api/users/me' + authParams(),
@@ -29,6 +32,7 @@ angular.module('app')
     }).then(function(res) {
       currentUser = res.data;
       console.log('currentUser:', currentUser);
+      return currentUser;
     }, function(err) {
       console.error(err);
     });
@@ -63,8 +67,7 @@ angular.module('app')
 
   var destroyUserCredentials = function() {
     authToken = undefined;
-    username = '';
-    currentUser = {};
+    currentUser = undefined;
     isAuthenticated = false;
     window.localStorage.removeItem(LOCAL_TOKEN_KEY);
   };
@@ -110,7 +113,7 @@ angular.module('app')
     role: function() {
       return role;
     },
-    currentUser: function() {
+    getCurrentUser: function() {
       return currentUser;
     },
     authToken: function(){

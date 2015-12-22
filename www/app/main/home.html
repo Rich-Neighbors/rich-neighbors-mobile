@@ -1,5 +1,5 @@
-<ion-view title="Rich Neighbors">
-  <ion-content overflow-scroll="true" padding="'true'" class="has-header">
+<ion-view title="Home">
+  <ion-content overflow-scroll="true"  class="has-header">
     <!-- <h4>Welcome to {{location}}</h4> -->
     <div class="item range">
       Location:
@@ -12,7 +12,7 @@
       <div style="margin: 0 auto; width:100px">
         <ion-spinner icon="dots" ng-hide="loaded"></ion-spinner>
       </div>
-      <ion-item class="item-thumbnail-left" collection-repeat="camp in campaigns" ng-click="viewCampaign(camp)">
+      <ion-item item-height="80" item-width="100%" class="item-thumbnail-left" collection-repeat="camp in campaigns" ng-click="viewCampaign(camp)">
         <img ng-src="{{camp.picture_url}}">
         <h2>{{camp.title}}</h2>
         <p>{{camp.goal | currency}}</p>
