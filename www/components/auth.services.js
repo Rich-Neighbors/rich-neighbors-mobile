@@ -122,7 +122,7 @@ angular.module('app')
   };
 })
 
-.factory('AuthInterceptor', function($rootScope, $q, AUTH_EVENTS) {
+.factory('AuthInterceptor', function($rootScope, $q, $injector, AUTH_EVENTS) {
   
   return {
     responseError: function(response) {
@@ -130,8 +130,10 @@ angular.module('app')
         401: AUTH_EVENTS.notAuthenticated,
         403: AUTH_EVENTS.notAuthorized
       }[response.status], response);
-      //var AuthService = $injector.get('AuthService');
-      //AuthService.logout();
+      var AuthService = $injector.get('AuthService');
+      AuthService.logout();
+      $state.go($state.current, {}, {reload: true});
+      console.error('unauthorized!');
       return $q.reject(response);
     }
   };
