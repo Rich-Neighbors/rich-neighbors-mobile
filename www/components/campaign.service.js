@@ -5,6 +5,14 @@ angular.module('app.services', [])
   var campaigns = [];
   var selectedCampaign;
 
+  var getLocal = function(id) {
+    var found = {};
+    campaigns.some(function(campaign){
+      found = campaign;
+      return campaign._id === id;
+    });
+    return found;
+  };
 
   var getCampaigns = function(id) {
     id = id || '';
@@ -24,6 +32,16 @@ angular.module('app.services', [])
       console.log(response);
       //handle error
     });
+  };
+
+  var updateCampaign = function(campaign){
+    return $http.put(HOST_URL + '/api/campaigns/' + campaign._id + AuthService.authParams(), campaign)
+        .success(function(data) {
+          return data;
+        })
+        .error(function(err){
+          return err;
+        });
   };
 
   var deleteCampaign = function(id) {
@@ -113,7 +131,12 @@ angular.module('app.services', [])
     getCampaigns: getCampaigns,
     followCampaign: followCampaign,
     deleteCampaign: deleteCampaign,
-    selectedCampaign: selectedCampaign
+    selectedCampaign: selectedCampaign,
+    updateCampaign: updateCampaign,
+    getLocal: getLocal,
+    setSelected: function(campaign){selectedCampaign = campaign;},
+    getSelected: function(campaign){return selectedCampaign;},
+
   };
 
 }]);

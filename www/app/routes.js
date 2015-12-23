@@ -47,6 +47,17 @@ angular.module('app.routes', [])
     }
   })
 
+  .state('tabsController.editCampaign', {
+    url: '/editcampaign/:id',
+    views: {
+      'homeTab@tabsController': {
+        templateUrl: 'app/campaign/createCampaign.html',
+        controller: 'createCampaignCtrl',
+        params: ['id']
+      }
+    }
+  })
+
   .state('tabsController.myCampaigns', {
     url: '/mycampaign',
     parent: 'tabsController',
@@ -64,7 +75,7 @@ angular.module('app.routes', [])
       'myTab@tabsController': {
         templateUrl: 'app/campaign/campaignProfile.html',
         controller: 'campaignProfileCtrl',
-        params: ['id'],
+        params: ['id']
       }
     }
   })
@@ -80,19 +91,16 @@ angular.module('app.routes', [])
     }
   })
 
-  .state('tabsController.newCampaignProfile', {
-    url: '/newcampaign/:id',
-    views: {
-      'createTab@tabsController': {
-        templateUrl: 'app/campaign/campaignProfile.html',
-        controller: 'campaignProfileCtrl',
-        params: ['id']
-        
-        
-      }
-    }
-  })
-
+  // .state('tabsController.editCampaign', {
+  //   url: '/editcampaign/:id',
+  //   views: {
+  //     'createTab': {
+  //       templateUrl: 'app/campaign/createCampaign.html',
+  //       controller: 'createCampaignCtrl',
+  //       params: ['id']
+  //     }
+  //   }
+  // })
 
 
   .state('tabsController.myAccount', {

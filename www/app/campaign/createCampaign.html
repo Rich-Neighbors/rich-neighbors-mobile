@@ -1,4 +1,7 @@
-<ion-view title="Create Campaign">
+<ion-view title="{{title}}">
+  <ion-nav-buttons side="right">
+    <button ng-if="id" ng-click="updateCampaign(campaign)" class="button button-clear">Save</button>
+  </ion-nav-buttons>
   <ion-content overflow-scroll="true" padding="'true'" class="has-header">
     <form class="list">
       <label class="item item-input">

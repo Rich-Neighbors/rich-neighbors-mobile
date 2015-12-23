@@ -1,5 +1,13 @@
-angular.module('app').controller('createCampaignCtrl', function($scope, $state, Campaign, Camera) {
+angular.module('app').controller('createCampaignCtrl', function($scope, $state, $ionicHistory, Campaign, Camera) {
   
+
+  $scope.id = $state.params.id;
+  $scope.newCampaign = Campaign.getSelected();
+  if ($scope.newCampaign){
+    $scope.volunteers = $scope.newCampaign.volunteers || [{}];
+    $scope.supplies = $scope.newCampaign.items || [{}];
+  }
+  $scope.title = 'Edit Campaign';   
 
   $scope.resetForm = function(){
     $scope.newCampaign = {
@@ -19,7 +27,10 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
   };
 
   //initialize form
-  $scope.resetForm();
+  if (!$scope.id) {
+    $scope.title = "Create a Campaign";
+    $scope.resetForm();
+  }
 
   $scope.addVolunteer = function(){
     $scope.volunteers.push({});
@@ -35,6 +46,18 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
 
   $scope.removeSupplies = function(index){
     $scope.supplies.splice(index, 1);
+  };
+
+  $scope.updateCampaign = function(campaign){
+
+    Campaign.updateCampaign($scope.newCampaign)
+      .success(function(data){
+        //$scope.viewCampaign(data);
+        $ionicHistory.goBack(-1);
+      })
+      .catch(function(err){
+        console.error(err);
+      });
   };
 
   $scope.createCampaign = function(){

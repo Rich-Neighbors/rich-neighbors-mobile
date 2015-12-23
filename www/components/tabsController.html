@@ -1,4 +1,4 @@
-<ion-view title="Tabs Controller">
+<ion-view title="Tabs Controller" ng-controller="tabsControllerCtrl">
     <ion-tabs class=" tabs-icon-top">
         <ion-tab title="Home" icon="ion-android-home" href="#/tabs/home">
             <ion-nav-view name="homeTab"></ion-nav-view>
@@ -7,6 +7,7 @@
             <ion-nav-view name="myTab"></ion-nav-view>
         </ion-tab>
         <ion-tab title="Create Campaign" icon="ion-ios-compose" href="#/tabs/startcampaign">
+        <!-- <ion-tab title="Create Campaign" icon="ion-ios-compose" ng-click="goto('createCampaign')"> -->
             <ion-nav-view name="createTab"></ion-nav-view>
         </ion-tab>
         <ion-tab title="myAccount" icon="ion-ios-person" href="#/tabs/userAccount">

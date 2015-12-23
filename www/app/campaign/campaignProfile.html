@@ -1,4 +1,7 @@
 <ion-view title="Campaign">
+  <ion-nav-buttons side="right">
+    <button ng-if="campaign.isOwner" ng-click="editCampaign(campaign)" class="button button-clear">Edit</button>
+  </ion-nav-buttons>
   <ion-content overflow-scroll="true" padding="'true'" class="has-header">
     <h1 style="text-align: center">{{campaign.title}}</h1>
 
@@ -56,6 +59,6 @@
       <a href="http://www.facebook.com/LeBron" class="button button-positive button-block icon ion-social-facebook"></a>
       <a href="http://www.instagram.com/kingjames/" class="button button-royal button-block icon ion-social-instagram"></a>
     </div>
-    <button ng-if="isOwner()" ng-click="deleteCampaign()" class="button button-assertive button-block ">Delete</button>
+    <button ng-if="campaign.isOwner" ng-click="deleteCampaign()" class="button button-assertive button-block ">Delete</button>
   </ion-content>
 </ion-view>

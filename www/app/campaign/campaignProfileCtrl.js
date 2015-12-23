@@ -1,35 +1,49 @@
 angular.module('app').controller('campaignProfileCtrl', function($scope, $http, $stateParams, $state, $ionicHistory, Campaign, AuthService, apiCall) {
 
+  if (Campaign.selectedCampaign === undefined){
+    $state.go('tabsController.home', {}, {reload: true});
+  }
+
   $scope.campaign = Campaign.selectedCampaign;
-  $scope.gotDetails = false;
+  $scope.currentUserId = AuthService.getCurrentUser()._id;
+  //$scope.gotDetails = false;
 
-  $scope.donated = '';
-  $scope.apiCall = apiCall.call;
-  $scope.linkApiCalls = apiCall.linkApiCalls;
-  $scope.obj = apiCall.obj;
+console.log('hi');
 
-  $scope.isOwner = function(){
-    return $scope.ownerId === AuthService.getCurrentUser()._id;
-  };
+  // $scope.isOwner = function(){
+  //   return $scope.ownerId === $scope.currentUserId;
+  // };
 
   $scope.getCampaign = function(){
     $scope.id = $stateParams.id;
 
-    Campaign.getCampaigns($scope.id).then(function(data){
-      $scope.campaign = data;
-      if ($scope.campaign.user_id) {
-        $scope.ownerId = $scope.campaign.user_id._id;
+    Campaign.getCampaigns($scope.id).then(function(campaign){
+      if (!$scope.campaign){
+        $scope.campaign = campaign;
+      }
+      //is user campaign owner
+      if (campaign.user_id) {
+        if (campaign.user_id._id === $scope.currentUserId){
+          campaign.isOwner = true;
+        }
       }
       $scope.loaded = true;
       $scope.$broadcast('scroll.refreshComplete');
-      return data;
+      return campaign;
     }).then(function(data){
       //get additional campaign data
-      if ($scope.gotDetails === false && data) {
+      //if ($scope.gotDetails === false && data) {
         $scope.getCampaignDetails(data);
-      }
+      //}
     });
     
+  };
+
+  $scope.editCampaign = function(campaign){
+    console.log('got', campaign)
+    Campaign.setSelected(campaign);
+    console.log('send',Campaign.getSelected());
+    $state.go('tabsController.editCampaign', {id: campaign._id}, {reload: true} );
   };
 
   $scope.followCampaign = function(campaign){
@@ -48,16 +62,15 @@ angular.module('app').controller('campaignProfileCtrl', function($scope, $http, 
   };
 
   $scope.getCampaignDetails = function(campaign){
-    $scope.gotDetails = true;
+    //$scope.gotDetails = true;
 
     var links = campaign._links.slice(1);
     apiCall.apiExtend(campaign, links, function(){
-      
+      $scope.campaign = campaign;   
       //determine if following campaign
-      var currentUserId = AuthService.getCurrentUser()._id;
-      $scope.campaign.following = campaign.followers.some(function(follower){
+      campaign.following = campaign.followers.some(function(follower){
          campaign.follower_id = follower._id;
-         return follower.user_id === currentUserId; 
+         return follower.user_id === $scope.currentUserId; 
       });
       console.log('follow id', campaign.follower_id)
 
