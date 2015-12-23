@@ -1,0 +1,57 @@
+
+.ng-binding {
+	color: rgb(86, 93, 99) !important;
+}
+
+.nav-bar-block, .bar {
+  background-color: rgb(23, 33, 41) !important;
+}
+
+.title {
+	color: rgb(33, 153, 232) !important;
+}
+
+.bar .buttons span {
+	color: rgb(58, 219, 118) !important;
+}
+
+.tab-item-active {
+	background-color: rgb(46, 66, 82) !important;
+}
+
+.tab-item .icon {
+	color: rgb(23, 33, 41) !important;
+}
+
+.tab-item-active .icon {
+	color: rgb(58, 219, 118) !important;
+}
+
+.tab-item-active .tab-title {
+	color: white !important;
+}
+
+.tab-item-active {
+	color: rgb(58, 219, 118) !important;
+}
+
+.button-positive {
+	background-color: rgb(33, 153, 232) !important;
+	border-color: rgb(33, 153, 232) !important;
+}
+	
+.button-balanced {
+	color: rgb(58, 219, 118) !important;
+	border-color: rgb(58, 219, 118) !important;
+	color: white !important;
+	font-weight: 500;
+}
+
+.tab-nav {
+	border-top: 20px;
+}
+
+.overflow-scroll {
+	/*background-color: rgb(46, 66, 82) !important;*/
+}
+

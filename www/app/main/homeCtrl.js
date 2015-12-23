@@ -1,6 +1,7 @@
 angular.module('app').controller('homeCtrl', function($scope, $state, $http, Campaign) {
   $scope.campaigns = [];
   $scope.loaded = false;
+
   
   $scope.getCampaigns = function(){
     Campaign.getCampaigns().then(function(data){
@@ -13,7 +14,7 @@ angular.module('app').controller('homeCtrl', function($scope, $state, $http, Cam
 
   $scope.viewCampaign = function(campaign){
   	//console.log(campaign._id);
-    //TODO: send loaded campaign to avoid display lag
+    Campaign.selectedCampaign = campaign;
   	$state.go('tabsController.campaignProfile', {id: campaign._id, campaign: campaign} );
   };
 

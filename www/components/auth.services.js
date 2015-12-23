@@ -1,6 +1,6 @@
 angular.module('app')
 
-.service('AuthService', function($q, $http, $ionicPopup, $state, USER_ROLES, HOST_URL) {
+.service('AuthService', function($q, $http, USER_ROLES, HOST_URL) {
   var LOCAL_TOKEN_KEY = 'token';
   var username = '';
   var isAuthenticated = false;
@@ -8,24 +8,35 @@ angular.module('app')
   var authToken;
   var currentUser = {};
 
+  var authParams = function(){
+    var params = '';
+    if (authToken !== undefined){
+      params += '?access_token=' + authToken;
+
+      if (currentUser._id !== undefined){
+        params += '&user=' + currentUser._id;
+      }
+    }
+    return params;
+  }; 
+
 
   var getCurrentUser = function() {
+    if (currentUser._id !== undefined){
+      return currentUser;
+    }
     $http({
       method: 'GET',
-      url: HOST_URL + '/api/users/me?access_token=' + window.localStorage.getItem(LOCAL_TOKEN_KEY),
+      url: HOST_URL + '/api/users/me' + authParams(),
       dataType: 'application/json',
     }).then(function(res) {
       currentUser = res.data;
-      //console.log(res.data);
+      console.log('currentUser:', currentUser);
+      return currentUser;
     }, function(err) {
       console.error(err);
     });
   };
-
-  //Check if user is already logged in on app initialize
-  if (window.localStorage.getItem(LOCAL_TOKEN_KEY)) {
-    getCurrentUser();
-  }
 
   var loadUserCredentials = function() {
     var token = window.localStorage.getItem(LOCAL_TOKEN_KEY);
@@ -34,16 +45,16 @@ angular.module('app')
     }
   };
 
-  var storeUserCredentials = function(username, token) {
+  var storeUserCredentials = function(token) {
     window.localStorage.setItem(LOCAL_TOKEN_KEY, token);
-    useCredentials(username, token);
-    getCurrentUser();
+    useCredentials(token);
   };
 
-  var useCredentials = function(username, token) {
-    username = token;
+  var useCredentials = function(token) {
     isAuthenticated = true;
     authToken = token;
+    getCurrentUser();
+
 
     // TODO: add real role determination
     if (username == 'admin') {
@@ -56,7 +67,6 @@ angular.module('app')
 
   var destroyUserCredentials = function() {
     authToken = undefined;
-    username = '';
     currentUser = {};
     isAuthenticated = false;
     window.localStorage.removeItem(LOCAL_TOKEN_KEY);
@@ -67,16 +77,11 @@ angular.module('app')
         email: email,
         password: password
       })
-      .then(function(res) {
-        storeUserCredentials(email, res.data.token);
-        $state.go('tabsController.home', {}, {reload: true});
+      .success(function(res) {
+        storeUserCredentials(res.token);
       })
-      .catch(function(err) {
+      .error(function(err) {
         console.error('login fail');
-        var alertPopup = $ionicPopup.alert({
-          title: 'Login failed!',
-          template: 'Please check your credentials!'
-        });
       });
   };
 
@@ -85,17 +90,20 @@ angular.module('app')
   };
 
   var isAuthorized = function(authorizedRoles) {
-    if (!angular.isArray(authorizedRoles)) {
-      authorizedRoles = [authorizedRoles];
-    }
-    return (isAuthenticated && authorizedRoles.indexOf(role) !== -1);
+    // if (!angular.isArray(authorizedRoles)) {
+    //   authorizedRoles = [authorizedRoles];
+    // }
+    // return (isAuthenticated && authorizedRoles.indexOf(role) !== -1);
+    return isAuthenticated;
   };
 
   loadUserCredentials();
+
   return {
     login: login,
     logout: logout,
     isAuthorized: isAuthorized,
+    authParams: authParams,
     isAuthenticated: function() {
       return isAuthenticated;
     },
@@ -105,24 +113,51 @@ angular.module('app')
     role: function() {
       return role;
     },
-    currentUser: function() {
+    getCurrentUser: function() {
       return currentUser;
+    },
+    authToken: function(){
+      return authToken;
     }
   };
 })
 
-.factory('AuthInterceptor', function($rootScope, $q, AUTH_EVENTS) {
+.factory('AuthInterceptor', function($rootScope, $q, $injector, AUTH_EVENTS) {
+  
   return {
     responseError: function(response) {
       $rootScope.$broadcast({
         401: AUTH_EVENTS.notAuthenticated,
         403: AUTH_EVENTS.notAuthorized
       }[response.status], response);
+      var AuthService = $injector.get('AuthService');
+      var $state = $injector.get('$state');
+      AuthService.logout();
+      $state.go($state.current, {}, {reload: true});
+      console.error('unauthorized!');
       return $q.reject(response);
     }
   };
 })
 
+// .factory('httpRequestInterceptor', function ($injector) {
+//   return {
+//     request: function (config) {
+//       var AuthService = $injector.get('AuthService');
+//       var token = AuthService.authToken();
+//       var user = AuthService.currentUser();
+//       if (token) {
+//         config.url =  URI(config.url).addSearch({'access_token': token}).toString();
+//       }
+//       if (user) {
+//         config.url =  URI(config.url).addSearch({'user': user}).toString();
+//       }
+//       return config;
+//     }
+//   };
+// })
+
 .config(function($httpProvider) {
   $httpProvider.interceptors.push('AuthInterceptor');
+  //$httpProvider.interceptors.push('httpRequestInterceptor');
 });

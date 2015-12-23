@@ -1,15 +1,22 @@
 <ion-view title="My Campaigns">
-    <ion-content overflow-scroll="true" padding="'true'" class="has-header">
-        <div class="button-bar">
-            <button class="button button-stable button-block ">My Campaigns</button>
-            <button class="button button-stable button-block ">Hearts</button>
-        </div>
-        <ion-list>
-            <ion-item class="item-thumbnail-left">
-                <img>
-                <h2>Title</h2>
-                <p>Item</p>
-            </ion-item>
-        </ion-list>
-    </ion-content>
+  <ion-content overflow-scroll="true" padding="'true'" class="has-header">
+    <div class="button-bar">
+      <button class="button button-stable button-block ">My Campaigns</button>
+      <button class="button button-stable button-block ">Hearts</button>
+    </div>
+    <ion-refresher pulling-text="Pull to refresh..." on-refresh="getCampaigns('me')">
+    </ion-refresher>
+    <ion-list>
+      <div style="margin: 0 auto; width:100px">
+        <ion-spinner icon="dots" ng-hide="loaded"></ion-spinner>
+      </div>
+      <ion-item class="item-thumbnail-left" collection-repeat="camp in campaigns" ng-click="viewCampaign(camp)">
+        <img ng-src="{{camp.picture_url}}">
+        <h2>{{camp.title}}</h2>
+        <p>{{camp.goal | currency}}</p>
+        <p>{{camp.raised}}</p>
+        <i id="like" ng-class="{'icon ion-ios7-heart': liked, 'icon ion-ios7-heart-outline': !liked}" ng-click="liked=!liked" ng-click="like(camp)"></i>
+      </ion-item>
+    </ion-list>
+  </ion-content>
 </ion-view>
