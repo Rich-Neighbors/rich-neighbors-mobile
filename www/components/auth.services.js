@@ -130,11 +130,6 @@ angular.module('app')
         401: AUTH_EVENTS.notAuthenticated,
         403: AUTH_EVENTS.notAuthorized
       }[response.status], response);
-      var AuthService = $injector.get('AuthService');
-      var $state = $injector.get('$state');
-      AuthService.logout();
-      $state.go($state.current, {}, {reload: true});
-      console.error('unauthorized!');
       return $q.reject(response);
     }
   };
