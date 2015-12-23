@@ -75,6 +75,32 @@ angular.module('app.services', [])
       });
   };
 
+  var followCampaign = function(campaign){
+    console.log(campaign.follower_id);
+    if (campaign.following){
+      //unfollow
+      return $http.delete(HOST_URL + '/api/followers/' + campaign.follower_id + AuthService.authParams())
+      .success(function(data){
+        console.log('unfollowed');
+      }).error(function(err){
+        console.error(err);
+      });
+    } else {
+      //follow
+      var newFollower = {};
+      newFollower.user_id = AuthService.getCurrentUser()._id;
+      newFollower.campaign_id = campaign._id;
+
+      return $http.post(HOST_URL + '/api/followers' + AuthService.authParams(), newFollower)
+        .success(function(data){
+          console.log('followed', data);
+          campaign.follow_id = data._id;
+        }).error(function(err){
+          console.error(err);
+        });
+    }
+  };
+
   // initial load of campaigns
   getCampaigns().then(function(data) {
     campaigns = data;
@@ -85,6 +111,7 @@ angular.module('app.services', [])
     campaigns: campaigns,
     createCampaign: createCampaign,
     getCampaigns: getCampaigns,
+    followCampaign: followCampaign,
     deleteCampaign: deleteCampaign,
     selectedCampaign: selectedCampaign
   };

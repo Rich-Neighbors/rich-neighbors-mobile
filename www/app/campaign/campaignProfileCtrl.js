@@ -1,4 +1,4 @@
-angular.module('app').controller('campaignProfileCtrl', function($scope, $stateParams, $state, $ionicHistory, Campaign, AuthService, apiCall) {
+angular.module('app').controller('campaignProfileCtrl', function($scope, $http, $stateParams, $state, $ionicHistory, Campaign, AuthService, apiCall) {
 
   $scope.campaign = Campaign.selectedCampaign;
   $scope.gotDetails = false;
@@ -32,16 +32,34 @@ angular.module('app').controller('campaignProfileCtrl', function($scope, $stateP
     
   };
 
+  $scope.followCampaign = function(campaign){
+    Campaign.followCampaign(campaign)
+      .success(function(data){
+        //sync follow status
+        console.log('sync',data);
+        if (data._id){
+          campaign.follower_id = data._id;
+          campaign.following = true;
+        } else {
+          campaign.following = false;
+        }
+      });
+    campaign.following = !campaign.following;
+  };
+
   $scope.getCampaignDetails = function(campaign){
     $scope.gotDetails = true;
 
     var links = campaign._links.slice(1);
     apiCall.apiExtend(campaign, links, function(){
+      
       //determine if following campaign
       var currentUserId = AuthService.getCurrentUser()._id;
       $scope.campaign.following = campaign.followers.some(function(follower){
+         campaign.follower_id = follower._id;
          return follower.user_id === currentUserId; 
       });
+      console.log('follow id', campaign.follower_id)
 
       //get total of donations
       var amounts = _.pluck(campaign.contributors, 'amount');

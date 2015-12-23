@@ -10,18 +10,23 @@
       </div>
     </div>
     <div class="card">
+      <div class="item item-icon-right" href="#">
+        Follow
+        <i id="like" ng-class="{'icon ion-ios7-heart': campaign.following, 'icon ion-ios7-heart-outline': !campaign.following}" ng-click="followCampaign(campaign)"></i>
+      </div>
       <div class="item item-text-wrap update">
         <p>{{campaign.description}}</p>
       </div>
     </div>
     <div class="list" >
-      <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments">
+      <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments | orderBy:'-created_at'"">
         <img ng-src="{{comment.profile_pic}}">
-        <h2>{{comment.username}}</h2>
         <h2>{{comment.text}}</h2>
+        <h3>{{comment.username}}</h3>
         <p>{{comment.created_at | date:'short' }}</p>
       </div>
     </div>
+    
     <div class="list">
       <a class="item item-avatar" href="#">
         <img src="https://scontent.xx.fbcdn.net/hprofile-xtp1/v/t1.0-1/p320x320/11391432_10203832951975075_4543799157993077748_n.jpg?oh=f5d82f3673bdb64f2283e0f65efc078a&oe=5720CECA">
