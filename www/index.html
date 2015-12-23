@@ -14,6 +14,7 @@
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="lib/underscore/underscore-min.js"></script>
 
     <link href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet">
 
@@ -35,6 +36,7 @@
     <script src="app/campaign/campaignSuccessPageCtrl.js"></script>
     
     <script src="components/campaign.service.js"></script>
+    <script src="components/apiCall.service.js"></script>
     <script src="components/camera.service.js"></script>
     <script src="components/auth.services.js"></script>
     <script src="components/directives.js"></script>
@@ -44,12 +46,12 @@
   </head>
   <body ng-app="app" animation="slide-left-right-ios7">
   <div>
-    <div>
+
         <ion-nav-bar class="bar-balanced">
-            <ion-nav-back-button class="button-icon icon ion-ios-arrow-back">Back</ion-nav-back-button>
+            <ion-nav-back-button class="button-icon icon ion-ios-arrow-back"></ion-nav-back-button>
         </ion-nav-bar>
         <ion-nav-view></ion-nav-view>
-    </div>
+
 </div>
   </body>
 </html>

@@ -53,6 +53,7 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
   //run view after created - pass campaign id in url
   $scope.viewCampaign = function(campaign){
     console.log('viewnew', campaign);
+    Campaign.selectedCampaign = campaign;
     $state.go('tabsController.newCampaignProfile', { id: campaign._id } );
   };
 

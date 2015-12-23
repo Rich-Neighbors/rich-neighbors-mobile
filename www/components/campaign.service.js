@@ -3,7 +3,7 @@ angular.module('app.services', [])
 .factory('Campaign', ['$http', 'HOST_URL', 'AuthService', function($http, HOST_URL, AuthService) {
 
   var campaigns = [];
-  var selectedCampaign = {};
+  var selectedCampaign;
 
 
   var getCampaigns = function(id) {

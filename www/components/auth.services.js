@@ -6,14 +6,14 @@ angular.module('app')
   var isAuthenticated = false;
   var role = '';
   var authToken;
-  var currentUser;
+  var currentUser = {};
 
   var authParams = function(){
     var params = '';
     if (authToken !== undefined){
       params += '?access_token=' + authToken;
 
-      if (currentUser !== undefined){
+      if (currentUser._id !== undefined){
         params += '&user=' + currentUser._id;
       }
     }
@@ -22,7 +22,7 @@ angular.module('app')
 
 
   var getCurrentUser = function() {
-    if (currentUser !== undefined){
+    if (currentUser._id !== undefined){
       return currentUser;
     }
     $http({
@@ -67,7 +67,7 @@ angular.module('app')
 
   var destroyUserCredentials = function() {
     authToken = undefined;
-    currentUser = undefined;
+    currentUser = {};
     isAuthenticated = false;
     window.localStorage.removeItem(LOCAL_TOKEN_KEY);
   };
@@ -131,6 +131,7 @@ angular.module('app')
         403: AUTH_EVENTS.notAuthorized
       }[response.status], response);
       var AuthService = $injector.get('AuthService');
+      var $state = $injector.get('$state');
       AuthService.logout();
       $state.go($state.current, {}, {reload: true});
       console.error('unauthorized!');
