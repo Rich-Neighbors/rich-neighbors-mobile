@@ -80,6 +80,17 @@ angular.module('app.routes', [])
     }
   })
 
+  .state('tabsController.editMyCampaign', {
+    url: '/editcampaign/:id',
+    views: {
+      'myTab@tabsController': {
+        templateUrl: 'app/campaign/createCampaign.html',
+        controller: 'createCampaignCtrl',
+        params: ['id']
+      }
+    }
+  })
+
   .state('tabsController.createCampaign', {
     url: '/startcampaign',
     parent: 'tabsController',

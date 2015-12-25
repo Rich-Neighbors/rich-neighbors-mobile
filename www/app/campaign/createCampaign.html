@@ -3,52 +3,12 @@
     <button ng-if="id" ng-click="updateCampaign(campaign)" class="button button-clear">Save</button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="true" padding="'true'" class="has-header">
-    <form class="list">
-      <label class="item item-input">
-        <span class="input-label">Title</span>
-        <input type="text" ng-model="newCampaign.title" placeholder="">
-      </label>
-      <label class="item item-input">
-        <span class="input-label">Location</span>
-        <input type="text" placeholder="">
-      </label>
-      <label class="item item-input">
-        <span class="input-label">Description</span>
-        <textarea rows="5" ng-model="newCampaign.description" placeholder=""> </textarea>
-      </label>
-      <label class="item item-input">
-        <span class="input-label" ng-model="newCampaign.picture_url">Photo Link</span>
-        <input type="text" placeholder="">
-      </label>
-    </form>
-    <form class="list">
-      <label class="item item-input" ng-model="newCampaign.goal">
-        <span class="input-label">Funding Goal</span>
-        <input type="text" ng-model="newCampaign.goal" placeholder="$$$">
-      </label>
-      <span class="input-label">Volunteers</span>
-      <div class="item item-button-right" ng-repeat="volunteer in volunteers">
-        <label class="block">
-          <input type="text" ng-model="volunteer.name" placeholder="Role">
-          <input type="text" ng-model="volunteer.quantity" placeholder="Quantity">
-        </label>
-        <button ng-click="addVolunteer()" ng-if="volunteers.length - 1 === $index" class="button button-positive ">+</button>
-        <button ng-click="removeVolunteer($index)" ng-if="volunteers.length - 1 !== $index" class="button button-stable">-</button>
-      </div>
-      <span class="input-label">Supplies</span>
-      <div class="item item-button-right" ng-repeat="item in supplies">
-        <label class="block">
-          <input type="text" ng-model="item.name" placeholder="Item">
-          <input type="text" ng-model="item.quantity" placeholder="Quantity">
-        </label>
-        <button ng-click="addSupplies()" ng-if="supplies.length - 1 === $index" class="button button-positive ">+</button>
-        <button ng-click="removeSupplies($index)" ng-if="supplies.length - 1 !== $index" class="button button-stable">-</button>
-      </div>
-    </form>
+
+    <campaign-form></campaign-form>
+
     <!-- <button class="button button-stable button-block ">Add Photo</button> -->
     <div class="button-bar">
-      <button ng-click="createCampaign()" class="button button-balanced button-block">Start a Campaign</button>
+      <button ng-if="!id" ng-click="createCampaign()" class="button button-balanced button-block">Start a Campaign</button>
     </div>
-    <form class="list"></form>
   </ion-content>
 </ion-view>

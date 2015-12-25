@@ -4,46 +4,46 @@ angular.module('app').controller('campaignProfileCtrl', function($scope, $http, 
     $state.go('tabsController.home', {}, {reload: true});
   }
 
-  $scope.campaign = Campaign.selectedCampaign;
+  $scope.id = $stateParams.id;
+  $scope.campaign = Campaign.select($scope.id);
   $scope.currentUserId = AuthService.getCurrentUser()._id;
   //$scope.gotDetails = false;
 
-console.log('hi');
-
-  // $scope.isOwner = function(){
-  //   return $scope.ownerId === $scope.currentUserId;
-  // };
+  $scope.isOwner = function(campaign){
+    if (campaign.user_id){
+      return campaign.user_id === $scope.currentUserId;
+    }
+  };
 
   $scope.getCampaign = function(){
-    $scope.id = $stateParams.id;
-
     Campaign.getCampaigns($scope.id).then(function(campaign){
       if (!$scope.campaign){
         $scope.campaign = campaign;
       }
-      //is user campaign owner
-      if (campaign.user_id) {
-        if (campaign.user_id._id === $scope.currentUserId){
-          campaign.isOwner = true;
-        }
-      }
+      
       $scope.loaded = true;
       $scope.$broadcast('scroll.refreshComplete');
+      /// set back to id
+      campaign = Campaign.select($scope.id);
+      $scope.getCampaignDetails(campaign);
       return campaign;
     }).then(function(data){
       //get additional campaign data
       //if ($scope.gotDetails === false && data) {
-        $scope.getCampaignDetails(data);
+        //$scope.getCampaignDetails(data);
       //}
     });
     
   };
 
   $scope.editCampaign = function(campaign){
-    console.log('got', campaign)
     Campaign.setSelected(campaign);
-    console.log('send',Campaign.getSelected());
-    $state.go('tabsController.editCampaign', {id: campaign._id}, {reload: true} );
+    console.log($state.current);
+    var editView = 'tabsController.editCampaign';
+    if ($state.current.name === 'tabsController.myCampaignProfile') {
+      editView = 'tabsController.editMyCampaign';
+    }
+    $state.go(editView, {id: campaign._id} );
   };
 
   $scope.followCampaign = function(campaign){
@@ -63,6 +63,13 @@ console.log('hi');
 
   $scope.getCampaignDetails = function(campaign){
     //$scope.gotDetails = true;
+
+    //is user campaign owner
+      if (campaign.user_id) {
+        if (campaign.user_id._id === $scope.currentUserId){
+          campaign.isOwner = true;
+        }
+      }
 
     var links = campaign._links.slice(1);
     apiCall.apiExtend(campaign, links, function(){
@@ -91,7 +98,9 @@ console.log('hi');
     $state.go($ionicHistory.backView().stateName, {}, {reload: true});
   };
 
-  $scope.getCampaign();
+    $scope.getCampaignDetails($scope.campaign);
+    //$scope.getCampaign();
+  
 
 
 

@@ -1,24 +1,27 @@
 <ion-view title="Home">
-  <ion-content overflow-scroll="true"  class="has-header">
+  <ion-content overflow-scroll="true" padding="true" class="has-header">
     <!-- <h4>Welcome to {{location}}</h4> -->
-    <div class="item range">
+    <!-- <div class="item range">
       Location:
       <input type="range" name="volume">
       <i class="icon ion-ios-location"></i>
+    </div> -->
+    <div class="button-bar">
+      <button class="button button-stable button-block ">Near Me</button>
+      <button class="button button-stable button-block ">Ending Soon</button>
     </div>
+
     <ion-refresher pulling-text="Pull to refresh..." on-refresh="getCampaigns()">
     </ion-refresher>
+
     <ion-list>
       <div style="margin: 0 auto; width:100px">
         <ion-spinner icon="dots" ng-hide="loaded"></ion-spinner>
       </div>
-      <ion-item item-height="80" item-width="100%" class="item-thumbnail-left" collection-repeat="camp in campaigns" ng-click="viewCampaign(camp)">
-        <img ng-src="{{camp.picture_url}}">
-        <h2>{{camp.title}}</h2>
-        <p>{{camp.goal | currency}}</p>
-        <p>{{camp.raised}}</p>
-        <i id="like" ng-class="{'icon ion-ios7-heart': liked, 'icon ion-ios7-heart-outline': !liked}" ng-click="liked=!liked" ng-click="like(camp)"></i>
-      </ion-item>
+      <div collection-repeat="campaign in Campaign.campaigns | orderBy : '-created_at'">
+      <campaign-list-item></campaign-list-item>
+      </div>
     </ion-list>
+    
   </ion-content>
 </ion-view>

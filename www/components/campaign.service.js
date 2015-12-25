@@ -2,16 +2,32 @@ angular.module('app.services', [])
 
 .factory('Campaign', ['$http', 'HOST_URL', 'AuthService', function($http, HOST_URL, AuthService) {
 
+  var selectIndex = 0;
   var campaigns = [];
+  var myCampaigns = [];
+  var selectedCampaigns = 'campaigns';
   var selectedCampaign;
 
-  var getLocal = function(id) {
-    var found = {};
-    campaigns.some(function(campaign){
-      found = campaign;
-      return campaign._id === id;
+  // var getLocal = function(id) {
+  //   var found = {};
+  //   campaigns.some(function(campaign){
+  //     found = campaign;
+  //     return campaign._id === id;
+  //   });
+  //   return found;
+  // };
+
+  var getRandom = function(){
+    return Math.random()*100;
+  };
+
+  var select = function(id){
+    index = _.findIndex(campaigns, function(campaign) { 
+      return campaign._id === id; 
     });
-    return found;
+    selectIndex = index;
+    return campaigns[index];
+    //return _.findWhere(campaigns, {_id: id});
   };
 
   var getCampaigns = function(id) {
@@ -27,6 +43,7 @@ angular.module('app.services', [])
       dataType: 'application/json',
     }).then(function successCallback(response) {
       campaigns = response.data;
+      console.log(campaigns);
       return response.data;
     }, function errorCallback(response) {
       console.log(response);
@@ -37,6 +54,8 @@ angular.module('app.services', [])
   var updateCampaign = function(campaign){
     return $http.put(HOST_URL + '/api/campaigns/' + campaign._id + AuthService.authParams(), campaign)
         .success(function(data) {
+          console.log('updated', data)
+          campaigns[selectIndex] = data;  
           return data;
         })
         .error(function(err){
@@ -126,14 +145,16 @@ angular.module('app.services', [])
 
 
   return {
+    getRandom: getRandom,
     campaigns: campaigns,
+    select: select,
+    showCampaigns: function(){ return campaigns; },
     createCampaign: createCampaign,
     getCampaigns: getCampaigns,
     followCampaign: followCampaign,
     deleteCampaign: deleteCampaign,
     selectedCampaign: selectedCampaign,
     updateCampaign: updateCampaign,
-    getLocal: getLocal,
     setSelected: function(campaign){selectedCampaign = campaign;},
     getSelected: function(campaign){return selectedCampaign;},
 

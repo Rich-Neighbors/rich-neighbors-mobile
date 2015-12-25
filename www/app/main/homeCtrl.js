@@ -1,12 +1,15 @@
 angular.module('app').controller('homeCtrl', function($scope, $state, $http, Campaign) {
-  $scope.campaigns = [];
+  $scope.Campaign = Campaign;
   $scope.loaded = false;
-
   
+  $scope.randNum = function() {
+    return Math.rand()*100;
+  };
+
   $scope.getCampaigns = function(){
     Campaign.getCampaigns().then(function(data){
-      //console.log(data);
-      $scope.campaigns = data;
+      //not sure why this assignement is needed
+      Campaign.campaigns = Campaign.showCampaigns();
       $scope.loaded = true;
       $scope.$broadcast('scroll.refreshComplete');
     });

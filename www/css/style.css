@@ -31,10 +31,6 @@
 	color: white !important;
 }
 
-.tab-item-active {
-	color: rgb(58, 219, 118) !important;
-}
-
 .button-positive {
 	background-color: rgb(33, 153, 232) !important;
 	border-color: rgb(33, 153, 232) !important;
@@ -53,5 +49,63 @@
 
 .overflow-scroll {
 	/*background-color: rgb(46, 66, 82) !important;*/
+}
+
+/*.campaign-item {
+	background-color: #344655;
+	
+}
+
+h2.ng-binding {
+	color: white !important;
+}*/
+
+.no-padding {
+    padding: 0px !important;
+}
+
+.campaign-stats b {
+	font-size: 1em;
+}
+
+.campaign-stats td, .campaign-stats th {
+	padding-right: 5px;
+	border: 0px;
+	cellpadding: 0px;
+	cellspacing: 0px;
+}
+.campaign-stats tr {
+	padding: 0px;
+}
+
+.campaign-stats {
+	margin: 0px;
+	font-size: .8em;
+	text-align: left;
+}
+
+
+.cause-info-bar {
+    border-radius: 15px;
+    background-color: rgb(162, 202, 234);
+    height: 15px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    position: relative;
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.cause-info-bar span {
+    border-radius: 15px;
+    background-color: rgb(46, 66, 82);
+    height: 15px;
+    display: block;
+    left: 0;
+    position: relative;
+
+    width: 0;
+    max-width: 100%;
 }
 

@@ -1,16 +1,17 @@
-angular.module('app').controller('createCampaignCtrl', function($scope, $state, $ionicHistory, Campaign, Camera) {
+angular.module('app').controller('createCampaignCtrl', function($scope, $state, $ionicHistory, $ionicConfig, Campaign, Camera) {
   
-
+  $ionicConfig.backButton.text("Back");
   $scope.id = $state.params.id;
-  $scope.newCampaign = Campaign.getSelected();
-  if ($scope.newCampaign){
-    $scope.volunteers = $scope.newCampaign.volunteers || [{}];
-    $scope.supplies = $scope.newCampaign.items || [{}];
+  $scope.campaign = Campaign.select($scope.id);
+  if ($scope.campaign){
+    console.log('editing', $scope.campaign);
+    $scope.volunteers = $scope.campaign.volunteers || [{}];
+    $scope.supplies = $scope.campaign.items || [{}];
   }
   $scope.title = 'Edit Campaign';   
 
   $scope.resetForm = function(){
-    $scope.newCampaign = {
+    $scope.campaign = {
       title: '',
       description: '',
       goal: '',
@@ -50,9 +51,8 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
 
   $scope.updateCampaign = function(campaign){
 
-    Campaign.updateCampaign($scope.newCampaign)
+    Campaign.updateCampaign(campaign)
       .success(function(data){
-        //$scope.viewCampaign(data);
         $ionicHistory.goBack(-1);
       })
       .catch(function(err){
@@ -62,7 +62,7 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
 
   $scope.createCampaign = function(){
     //save campaign
-    Campaign.createCampaign($scope.newCampaign, $scope.volunteers, $scope.supplies)
+    Campaign.createCampaign($scope.campaign, $scope.volunteers, $scope.supplies)
       .then(function(res){
         $scope.viewCampaign(res.data);
       })
