@@ -43,6 +43,10 @@
 	font-weight: 500;
 }
 
+.large-icon {
+    font-size: 30px;
+}
+
 .tab-nav {
 	border-top: 20px;
 }

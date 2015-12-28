@@ -8,10 +8,10 @@
     <ion-refresher pulling-text="Pull to refresh..." on-refresh="getCampaigns('me')">
     </ion-refresher>
 
+    <div style="margin: 0 auto; width:100px">
+      <ion-spinner icon="dots" ng-hide="loaded"></ion-spinner>
+    </div>
     <ion-list>
-      <div style="margin: 0 auto; width:100px">
-        <ion-spinner icon="dots" ng-hide="loaded"></ion-spinner>
-      </div>
       <div collection-repeat="campaign in campaigns | orderBy : '-created_at'">
         <campaign-list-item></campaign-list-item>
       </div>

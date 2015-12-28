@@ -1,6 +1,6 @@
 angular.module('app.services', [])
 
-.factory('Campaign', ['$http', 'HOST_URL', 'AuthService', function($http, HOST_URL, AuthService) {
+.factory('Campaign', ['$http', 'HOST_URL', 'AuthService', function($http, HOST_URL, AuthService, apiCall) {
 
   var selectIndex = 0;
   var campaigns = [];
@@ -8,26 +8,20 @@ angular.module('app.services', [])
   var selectedCampaigns = 'campaigns';
   var selectedCampaign;
 
-  // var getLocal = function(id) {
-  //   var found = {};
-  //   campaigns.some(function(campaign){
-  //     found = campaign;
-  //     return campaign._id === id;
-  //   });
-  //   return found;
-  // };
-
-  var getRandom = function(){
-    return Math.random()*100;
+  var getRandom = function() {
+    return Math.random() * 100;
   };
 
-  var select = function(id){
-    index = _.findIndex(campaigns, function(campaign) { 
-      return campaign._id === id; 
+  var setCampaigns = function(selection){
+    campaigns.length = 0;
+    campaigns.push.apply(campaigns, selection);
+  };
+
+  var select = function(id) {
+    selectIndex = _.findIndex(campaigns, function(campaign) {
+      return campaign._id === id;
     });
-    selectIndex = index;
-    return campaigns[index];
-    //return _.findWhere(campaigns, {_id: id});
+    return campaigns[selectIndex];
   };
 
   var getCampaigns = function(id) {
@@ -42,7 +36,7 @@ angular.module('app.services', [])
       url: HOST_URL + apiUrl + id + AuthService.authParams(),
       dataType: 'application/json',
     }).then(function successCallback(response) {
-      campaigns = response.data;
+      setCampaigns(response.data);
       console.log(campaigns);
       return response.data;
     }, function errorCallback(response) {
@@ -51,20 +45,28 @@ angular.module('app.services', [])
     });
   };
 
-  var updateCampaign = function(campaign){
+  var updateCampaign = function(campaign, volunteers, supplies) {
     return $http.put(HOST_URL + '/api/campaigns/' + campaign._id + AuthService.authParams(), campaign)
-        .success(function(data) {
-          console.log('updated', data)
-          campaigns[selectIndex] = data;  
-          return data;
-        })
-        .error(function(err){
-          return err;
+      .success(function(data) {
+        console.log('updated', data)
+        campaigns[selectIndex] = data;
+          //update the rest
+          addCampaignNeeds(data, {
+          'items': supplies,
+          'volunteers': volunteers
         });
+        return data;
+      })
+      .error(function(err) {
+        return err;
+      });
+
+    //apply after fully updated
+    
   };
 
   var deleteCampaign = function(id) {
-    return $http.delete(HOST_URL + '/api/campaigns/' + id + AuthService.authParams() + '&user=' + AuthService.getCurrentUser())
+    return $http.delete(HOST_URL + '/api/campaigns/' + id + AuthService.authParams())
       .success(function(data) {
         console.log('deleted');
         console.log(data);
@@ -76,34 +78,11 @@ angular.module('app.services', [])
 
   var createCampaign = function(newCampaign, volunteers, supplies) {
     return $http.post(HOST_URL + '/api/campaigns' + AuthService.authParams(), newCampaign)
-      .success(function(data) {
-        console.log('campaign res:', data);
-        var campaign_id = data._id;
-        //add volunteers
-        volunteers.forEach(function(volunteer) {
-          if (volunteer.name && volunteer.quantity) {
-            volunteer['campaign_id'] = campaign_id;
-            $http.post(HOST_URL + '/api/volunteers' + AuthService.authParams(), volunteer)
-              .success(function(data) {
-                console.log('volunteer', data);
-              })
-              .error(function(err) {
-                console.error(err);
-              });
-          }
-        });
-        //add supplies
-        supplies.forEach(function(item) {
-          if (item.name && item.quantity) {
-            item['campaign_id'] = campaign_id;
-            $http.post(HOST_URL + '/api/items' + AuthService.authParams(), item)
-              .success(function(data) {
-                console.log('item', data);
-              })
-              .error(function(err) {
-                console.error(err);
-              });
-          }
+      .success(function(campaign) {
+        console.log('new campaign:', campaign);
+        addCampaignNeeds(campaign, {
+          'items': supplies,
+          'volunteers': volunteers
         });
       })
       .error(function(err) {
@@ -112,16 +91,33 @@ angular.module('app.services', [])
       });
   };
 
-  var followCampaign = function(campaign){
+  var addCampaignNeeds = function(campaign, needs) {
+    for (var needType in needs) {
+      needs[needType].forEach(function(need) {
+        if (need.name && need.quantity) {
+          need['campaign_id'] = campaign._id;
+          $http.post(HOST_URL + '/api/' + needType + AuthService.authParams(), need)
+            .success(function(data) {
+              console.log('added needs', data);
+            })
+            .error(function(err) {
+              console.error(err);
+            });
+        }
+      });
+    }
+  };
+
+  var followCampaign = function(campaign) {
     console.log(campaign.follower_id);
-    if (campaign.following){
+    if (campaign.following) {
       //unfollow
       return $http.delete(HOST_URL + '/api/followers/' + campaign.follower_id + AuthService.authParams())
-      .success(function(data){
-        console.log('unfollowed');
-      }).error(function(err){
-        console.error(err);
-      });
+        .success(function(data) {
+          console.log('unfollowed');
+        }).error(function(err) {
+          console.error(err);
+        });
     } else {
       //follow
       var newFollower = {};
@@ -129,34 +125,38 @@ angular.module('app.services', [])
       newFollower.campaign_id = campaign._id;
 
       return $http.post(HOST_URL + '/api/followers' + AuthService.authParams(), newFollower)
-        .success(function(data){
+        .success(function(data) {
           console.log('followed', data);
           campaign.follow_id = data._id;
-        }).error(function(err){
+        }).error(function(err) {
           console.error(err);
         });
     }
   };
 
-  // initial load of campaigns
-  getCampaigns().then(function(data) {
-    campaigns = data;
-  });
+  getCampaigns();
+
 
 
   return {
     getRandom: getRandom,
     campaigns: campaigns,
     select: select,
-    showCampaigns: function(){ return campaigns; },
+    showCampaigns: function() {
+      return campaigns;
+    },
     createCampaign: createCampaign,
     getCampaigns: getCampaigns,
     followCampaign: followCampaign,
     deleteCampaign: deleteCampaign,
     selectedCampaign: selectedCampaign,
     updateCampaign: updateCampaign,
-    setSelected: function(campaign){selectedCampaign = campaign;},
-    getSelected: function(campaign){return selectedCampaign;},
+    setSelected: function(campaign) {
+      selectedCampaign = campaign;
+    },
+    getSelected: function(campaign) {
+      return selectedCampaign;
+    },
 
   };
 

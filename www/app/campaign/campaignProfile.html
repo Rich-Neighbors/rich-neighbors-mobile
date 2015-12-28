@@ -22,7 +22,7 @@
       </div>
     </div>
     <!-- supplies list -->
-    <div class="item" ng-if="campaign.volunteers">
+    <div class="item" ng-if="campaign.volunteers[0]._id">
       <h2>Volunteers Needed</h2>
         <p><span ng-repeat="volunteer in campaign.volunteers">
           {{ volunteer.name}}: <b>{{ volunteer.quantity }}</b>
@@ -31,7 +31,7 @@
     </div>
 
     <!-- supplies list -->
-    <div class="item" ng-if="campaign.items">
+    <div class="item" ng-if="campaign.items[0]._id">
       <h2>Supplies Needed</h2>
         <p><span ng-repeat="item in campaign.items">
           {{ item.name}}: <b>{{ item.quantity }}</b>
@@ -40,7 +40,7 @@
     </div>
 
     <!-- comments list -->
-    <div class="list" >
+    <div class="list" ng-if="campaign.comments[0]._id">
       <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments | orderBy:'-created_at'">
         <img ng-src="{{comment.profile_pic}}">
         <h2>{{comment.text}}</h2>
@@ -75,6 +75,6 @@
       <a href="http://www.facebook.com/LeBron" class="button button-positive button-block icon ion-social-facebook"></a>
       <a href="http://www.instagram.com/kingjames/" class="button button-royal button-block icon ion-social-instagram"></a>
     </div>
-    <button ng-if="campaign.isOwner" ng-click="deleteCampaign()" class="button button-assertive button-block ">Delete</button>
+    <button ng-if="isOwner(campaign)" ng-click="deleteCampaign()" class="button button-assertive button-block ">Delete</button>
   </ion-content>
 </ion-view>
