@@ -16,9 +16,26 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
 
     $scope.supplies = [];
     $scope.volunteers = [];
+    
+    $scope.loadCampaign();
   };
 
-    
+  $scope.loadCampaign = function(){
+    $scope.id = $state.params.id;
+    if ($scope.id) {
+      $scope.title = 'Edit Campaign';
+      $scope.campaign = Campaign.select($scope.id);
+      $scope.volunteers = $scope.campaign.volunteers;
+      $scope.campaign.volunteers = [];
+      $scope.supplies = $scope.campaign.items;
+      $scope.campaign.items = [];
+    } else {
+      $scope.title = "Create a Campaign";  
+    }
+    //add first items
+    $scope.addVolunteer();
+    $scope.addSupplies();
+  };
 
   $scope.addVolunteer = function(){
     $scope.volunteers.push({'new': true});
@@ -81,22 +98,10 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
     });
   };
 
+  //initialize form
   $scope.resetForm();
-  //initialize scope
-  $scope.id = $state.params.id;
-  if ($scope.id) {
-    $scope.title = 'Edit Campaign';
-    $scope.campaign = Campaign.select($scope.id);
-    $scope.volunteers = $scope.campaign.volunteers;
-    $scope.campaign.volunteers = [];
-    $scope.supplies = $scope.campaign.items;
-    $scope.campaign.items = [];
-  } else {
-    $scope.title = "Create a Campaign";  
-  }
   
-  //add first items
-  $scope.addVolunteer();
-  $scope.addSupplies(); 
+  
+   
 
 });

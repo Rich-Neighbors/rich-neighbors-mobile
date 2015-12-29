@@ -1,6 +1,6 @@
 angular.module('app.services', [])
 
-.factory('Campaign', ['$http', 'HOST_URL', 'AuthService', function($http, HOST_URL, AuthService, apiCall) {
+.factory('Campaign', ['$http', 'HOST_URL', 'AuthService', 'apiCall', function($http, HOST_URL, AuthService, apiCall) {
 
   var selectIndex = 0;
   var campaigns = [];
@@ -26,10 +26,13 @@ angular.module('app.services', [])
 
   var getCampaigns = function(filter) {
     //set api call by filter
-    var apiUrl = '/api/campaigns/' + ( filter || '');
+    var apiUrl = '/api/campaigns/';
     if (filter === 'campaigns' || filter === 'followers'){
       apiUrl = '/api/users/me/' + filter;
-    } 
+    } else if (filter){
+      apiUrl += filter;
+      var id = filter;
+    }
     return $http({
       method: 'GET',
       url: HOST_URL + apiUrl + AuthService.authParams(),
@@ -40,13 +43,55 @@ angular.module('app.services', [])
       if (filter === 'followers'){
        data = _.pluck(data, 'campaign_id');
       }
-      setCampaigns(data);
+
+      if (id){
+        select(id);
+        //if first load, replace local early
+        // if (!campaigns[selectIndex].loaded) {
+        //   var oldCampaign = campaigns[selectIndex];
+        //   _.extend(oldCampaign, data);
+        //   getCampaignDetails(oldCampaign);
+        // } else {
+          getCampaignDetails(data);
+        //}
+      } else {
+        setCampaigns(data); 
+      }
       console.log(campaigns);
-      return data;
+      //return data;
     }, function errorCallback(response) {
       console.log(response);
       //handle error
     });
+  };
+
+  var getCampaignDetails = function(campaign){
+
+    var links = campaign._links.slice(1);
+    apiCall.apiExtend(campaign, links, function(){
+      //$scope.campaign = campaign;  
+
+      //determine if following campaign
+      var currentUser = AuthService.getCurrentUser();
+      campaign.following = campaign.followers.some(function(follower){
+         campaign.follower_id = follower._id;
+         return follower.user_id === currentUser._id; 
+      });
+      console.log('follow id', campaign.follower_id)
+
+      //get total of donations
+      var amounts = _.pluck(campaign.contributors, 'amount');
+      campaign.donated = _.reduce(amounts, function(total, n) {
+        return total + n;
+      }, 0);
+      
+      campaign.loaded = true;
+      //replace local campaign with retrieved
+      var oldCampaign = campaigns[selectIndex];
+      _.extend(oldCampaign, campaign);
+      console.log('full campaign', campaign)
+    });
+
   };
 
   var updateCampaign = function(campaign, volunteers, supplies) {
@@ -206,6 +251,7 @@ angular.module('app.services', [])
     //getRandom: getRandom,
     campaigns: campaigns,
     select: select,
+    //getSelected: function() {return campaigns[selectIndex];},
     showCampaigns: function() {
       return campaigns;
     },

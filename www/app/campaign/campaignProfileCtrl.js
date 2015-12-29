@@ -1,39 +1,25 @@
 angular.module('app').controller('campaignProfileCtrl', function($scope, $http, $stateParams, $state, $ionicHistory, Campaign, AuthService, apiCall) {
 
-  if (Campaign.selectedCampaign === undefined){
-    $state.go('tabsController.home', {}, {reload: true});
-  }
 
   $scope.id = $stateParams.id;
   $scope.campaign = Campaign.select($scope.id);
+  if ($scope.campaign === undefined){
+    $state.go('tabsController.home', {}, {reload: true});
+  }
   $scope.currentUserId = AuthService.getCurrentUser()._id;
   //$scope.gotDetails = false;
 
   $scope.isOwner = function(campaign){
     if (campaign.user_id){
-      return campaign.user_id === $scope.currentUserId;
+      return campaign.user_id._id === $scope.currentUserId;
     }
   };
 
   $scope.getCampaign = function(){
-    Campaign.getCampaigns($scope.id).then(function(campaign){
-      if (!$scope.campaign){
-        $scope.campaign = campaign;
-      }
-      
+    Campaign.getCampaigns($scope.id).then(function(campaign){    
       $scope.loaded = true;
       $scope.$broadcast('scroll.refreshComplete');
-      /// set back to id
-      campaign = Campaign.select($scope.id);
-      $scope.getCampaignDetails(campaign);
-      return campaign;
-    }).then(function(data){
-      //get additional campaign data
-      //if ($scope.gotDetails === false && data) {
-        //$scope.getCampaignDetails(data);
-      //}
-    });
-    
+    });  
   };
 
   $scope.editCampaign = function(campaign){
@@ -61,35 +47,27 @@ angular.module('app').controller('campaignProfileCtrl', function($scope, $http, 
     campaign.following = !campaign.following;
   };
 
-  $scope.getCampaignDetails = function(campaign){
-    //$scope.gotDetails = true;
+  // $scope.getCampaignDetails = function(campaign){
 
-    //is user campaign owner
-      if (campaign.user_id) {
-        if (campaign.user_id._id === $scope.currentUserId){
-          campaign.isOwner = true;
-        }
-      }
+  //   var links = campaign._links.slice(1);
+  //   apiCall.apiExtend(campaign, links, function(){
+  //     $scope.campaign = campaign;   
+  //     //determine if following campaign
+  //     campaign.following = campaign.followers.some(function(follower){
+  //        campaign.follower_id = follower._id;
+  //        return follower.user_id === $scope.currentUserId; 
+  //     });
+  //     console.log('follow id', campaign.follower_id)
 
-    var links = campaign._links.slice(1);
-    apiCall.apiExtend(campaign, links, function(){
-      $scope.campaign = campaign;   
-      //determine if following campaign
-      campaign.following = campaign.followers.some(function(follower){
-         campaign.follower_id = follower._id;
-         return follower.user_id === $scope.currentUserId; 
-      });
-      console.log('follow id', campaign.follower_id)
+  //     //get total of donations
+  //     var amounts = _.pluck(campaign.contributors, 'amount');
+  //     campaign.donated = _.reduce(amounts, function(total, n) {
+  //       return total + n;
+  //     }, 0);
+  //     console.log($scope.campaign)
+  //   });
 
-      //get total of donations
-      var amounts = _.pluck(campaign.contributors, 'amount');
-      campaign.donated = _.reduce(amounts, function(total, n) {
-        return total + n;
-      }, 0);
-      console.log($scope.campaign)
-    });
-
-  };
+  // };
 
   $scope.deleteCampaign = function(){
     //add an "are you sure" popup
@@ -98,8 +76,8 @@ angular.module('app').controller('campaignProfileCtrl', function($scope, $http, 
     $state.go($ionicHistory.backView().stateName, {}, {reload: true});
   };
 
-    $scope.getCampaignDetails($scope.campaign);
-    //$scope.getCampaign();
+    //$scope.getCampaignDetails($scope.campaign);
+    $scope.getCampaign();
   
 
 
