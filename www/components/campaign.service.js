@@ -243,6 +243,16 @@ angular.module('app.services', [])
     }
   };
 
+  var addComment = function(comment){
+    return $http.post(HOST_URL + '/api/comments' + AuthService.authParams(), comment)
+      .success(function(data) {
+        console.log('added comment', data);
+        return data;
+      }).error(function(err) {
+        console.log(err);
+      });
+  };
+
   getCampaigns();
 
 
@@ -262,14 +272,8 @@ angular.module('app.services', [])
     selectedCampaign: selectedCampaign,
     updateCampaign: updateCampaign,
     deleteCampaignVolunteer: deleteCampaignVolunteer,
-    deleteCampaignItem: deleteCampaignItem
-
-    // setSelected: function(campaign) {
-    //   selectedCampaign = campaign;
-    // },
-    // getSelected: function(campaign) {
-    //   return selectedCampaign;
-    // },
+    deleteCampaignItem: deleteCampaignItem,
+    addComment: addComment
 
   };
 

@@ -38,9 +38,20 @@
         </span></p>
       </div>
     </div>
-
+    
     <!-- comments list -->
     <div class="list" ng-if="campaign.comments[0]._id">
+      <!-- comment form -->
+      <div class="item item-avatar" ng-if="isAuthenticated()">
+        <img ng-src="{{currentUser.profile_pic}}">
+        <label class="item item-input item-stacked-label">
+          <textarea type="text" ng-model="comment.text" rows="8" cols="10" placeholder="Add a comment..."></textarea>
+        </label>
+      <div class="button-bar">
+        <button ng-click="addComment(comment)" class="button button-balanced button-block">Add Comment</button>
+      </div>
+        </div>
+
       <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments | orderBy:'-created_at'">
         <img ng-src="{{comment.profile_pic}}">
         <h2>{{comment.text}}</h2>

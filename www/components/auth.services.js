@@ -54,15 +54,6 @@ angular.module('app')
     isAuthenticated = true;
     authToken = token;
     getCurrentUser();
-
-
-    // TODO: add real role determination
-    if (username == 'admin') {
-      role = USER_ROLES.admin;
-    }
-    if (username == 'user') {
-      role = USER_ROLES.public;
-    }
   };
 
   var destroyUserCredentials = function() {
