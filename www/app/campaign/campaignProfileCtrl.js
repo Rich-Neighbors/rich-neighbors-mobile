@@ -37,7 +37,7 @@ angular.module('app').controller('campaignProfileCtrl', function($scope, $http, 
   };
 
   $scope.editCampaign = function(campaign){
-    Campaign.setSelected(campaign);
+    //Campaign.setSelected(campaign);
     console.log($state.current);
     var editView = 'tabsController.editCampaign';
     if ($state.current.name === 'tabsController.myCampaignProfile') {

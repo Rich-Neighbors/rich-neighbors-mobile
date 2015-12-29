@@ -24,8 +24,8 @@
   <span class="input-label">Volunteers</span>
   <div class="item item-button-right" ng-repeat="volunteer in volunteers">
     <label class="block">
-      <input type="text" ng-model="volunteer.name" placeholder="Role">
-      <input type="text" ng-model="volunteer.quantity" placeholder="Quantity">
+      <input type="text" ng-model="volunteer.name" ng-change="volunteer.updated = true" placeholder="Role">
+      <input type="text" ng-model="volunteer.quantity" ng-change="volunteer.updated = true" placeholder="Quantity">
     </label>
     <button ng-click="addVolunteer()" ng-if="volunteers.length - 1 === $index" class="button button-positive ">+</button>
     <button ng-click="removeVolunteer($index)" ng-if="volunteers.length - 1 !== $index" class="button button-stable">-</button>
@@ -33,8 +33,8 @@
   <span class="input-label">Supplies</span>
   <div class="item item-button-right" ng-repeat="item in supplies">
     <label class="block">
-      <input type="text" ng-model="item.name" placeholder="Item">
-      <input type="text" ng-model="item.quantity" placeholder="Quantity">
+      <input type="text" ng-model="item.name" ng-change="item.updated = true"placeholder="Item">
+      <input type="text" ng-model="item.quantity" ng-change="item.updated = true" placeholder="Quantity">
     </label>
     <button ng-click="addSupplies()" ng-if="supplies.length - 1 === $index" class="button button-positive ">+</button>
     <button ng-click="removeSupplies($index)" ng-if="supplies.length - 1 !== $index" class="button button-stable">-</button>

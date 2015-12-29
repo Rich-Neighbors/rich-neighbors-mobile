@@ -14,39 +14,32 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
       longitude: '',
     };
 
-    $scope.supplies = [{}];
-    $scope.volunteers = [{}];
+    $scope.supplies = [];
+    $scope.volunteers = [];
   };
 
-  $scope.resetForm();
-
-
-  //initialize scope
-  $scope.id = $state.params.id;
-  if ($scope.id) {
-    $scope.title = 'Edit Campaign';
-    $scope.campaign = Campaign.select($scope.id);
-    $scope.volunteers = $scope.campaign.volunteers || [{}];
-    $scope.supplies = $scope.campaign.items || [{}];
-  } else {
-    $scope.title = "Create a Campaign";  
-  }
-     
+    
 
   $scope.addVolunteer = function(){
-    $scope.volunteers.push({});
+    $scope.volunteers.push({'new': true});
   };
 
   $scope.removeVolunteer = function(index){
-    $scope.volunteers.splice(index, 1);
+    var removed = $scope.volunteers.splice(index, 1);
+    if (removed[0]._id){
+      Campaign.deleteCampaignVolunteer(removed[0]._id);
+    }
   };
 
   $scope.addSupplies = function(){
-    $scope.supplies.push({});
+    $scope.supplies.push({'new': true});
   };
 
   $scope.removeSupplies = function(index){
-    $scope.supplies.splice(index, 1);
+    var removed = $scope.supplies.splice(index, 1);
+    if (removed[0]._id){
+      Campaign.deleteCampaignItem(removed[0]._id);
+    }
   };
 
   $scope.updateCampaign = function(campaign){
@@ -75,8 +68,7 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
 
   //run view after created - pass campaign id in url
   $scope.viewCampaign = function(campaign){
-    console.log('viewnew', campaign);
-    Campaign.selectedCampaign = campaign;
+    //Campaign.selectedCampaign = campaign;
     $state.go('tabsController.newCampaignProfile', { id: campaign._id } );
   };
 
@@ -88,5 +80,23 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
       console.err(err);
     });
   };
+
+  $scope.resetForm();
+  //initialize scope
+  $scope.id = $state.params.id;
+  if ($scope.id) {
+    $scope.title = 'Edit Campaign';
+    $scope.campaign = Campaign.select($scope.id);
+    $scope.volunteers = $scope.campaign.volunteers;
+    $scope.campaign.volunteers = [];
+    $scope.supplies = $scope.campaign.items;
+    $scope.campaign.items = [];
+  } else {
+    $scope.title = "Create a Campaign";  
+  }
+  
+  //add first items
+  $scope.addVolunteer();
+  $scope.addSupplies(); 
 
 });

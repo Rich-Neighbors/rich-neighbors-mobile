@@ -6,11 +6,11 @@
       <input type="range" name="volume">
       <i class="icon ion-ios-location"></i>
     </div> -->
-    <div class="button-bar">
-      <button class="button button-stable button-block ion-ios-location large-icon" ng-click="changeFilter('')"></button>
-      <button class="button button-stable button-block ion-clock large-icon"></button>
-      <button class="button button-stable button-block ion-person large-icon" ng-click="changeFilter('me')"></button>
-      <button class="button button-stable button-block ion-heart large-icon"></button>
+    <div class="button-bar" ng-init="selected=1">
+      <button ng-class="{'active': !filter}" class="button button-stable button-block ion-ios-location large-icon" ng-click="changeFilter()"></button>
+      <button ng-class="{'active': filter === 'time'}" class="button button-stable button-block ion-clock large-icon"></button>
+      <button ng-class="{'active': filter === 'campaigns'}" class="button button-stable button-block ion-person large-icon" ng-click="changeFilter('campaigns')"></button>
+      <button ng-class="{'active': filter === 'followers'}" class="button button-stable button-block ion-heart large-icon" ng-click="changeFilter('followers')"></button>
     </div>
 
     <ion-refresher pulling-text="Pull to refresh..." on-refresh="getCampaigns()">

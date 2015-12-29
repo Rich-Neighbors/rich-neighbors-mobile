@@ -1,7 +1,6 @@
 angular.module('app').controller('homeCtrl', function($scope, $state, $http, Campaign) {
   $scope.Campaign = Campaign;
   $scope.loaded = false;
-  $scope.filter = '';
   
   $scope.changeFilter = function(filter){
     $scope.filter = filter;
