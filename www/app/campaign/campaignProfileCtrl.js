@@ -1,17 +1,18 @@
 angular.module('app').controller('campaignProfileCtrl', function($scope, $http, $stateParams, $state, $ionicHistory, Campaign, AuthService, apiCall) {
 
-
   $scope.id = $stateParams.id;
+  $scope.isAuthenticated = AuthService.isAuthenticated;
+  $scope.currentUser = AuthService.getCurrentUser();
   $scope.campaign = Campaign.select($scope.id);
-  if ($scope.campaign === undefined){
-    $state.go('tabsController.home', {}, {reload: true});
-  }
-  $scope.currentUserId = AuthService.getCurrentUser()._id;
+  $scope.comment = {};
+  // if ($scope.campaign === undefined){
+  //   $state.go('tabsController.home', {}, {reload: true});
+  // }
   //$scope.gotDetails = false;
 
   $scope.isOwner = function(campaign){
     if (campaign.user_id){
-      return campaign.user_id._id === $scope.currentUserId;
+      return campaign.user_id._id === $scope.currentUser._id;
     }
   };
 
@@ -32,6 +33,13 @@ angular.module('app').controller('campaignProfileCtrl', function($scope, $http, 
     $state.go(editView, {id: campaign._id} );
   };
 
+  $scope.deleteCampaign = function(){
+    //add an "are you sure" popup
+    Campaign.deleteCampaign($scope.id);
+    //TODO: fix refresh after campaign deletion
+    $state.go($ionicHistory.backView().stateName, {}, {reload: true});
+  };
+
   $scope.followCampaign = function(campaign){
     Campaign.followCampaign(campaign)
       .success(function(data){
@@ -47,34 +55,21 @@ angular.module('app').controller('campaignProfileCtrl', function($scope, $http, 
     campaign.following = !campaign.following;
   };
 
-  // $scope.getCampaignDetails = function(campaign){
-
-  //   var links = campaign._links.slice(1);
-  //   apiCall.apiExtend(campaign, links, function(){
-  //     $scope.campaign = campaign;   
-  //     //determine if following campaign
-  //     campaign.following = campaign.followers.some(function(follower){
-  //        campaign.follower_id = follower._id;
-  //        return follower.user_id === $scope.currentUserId; 
-  //     });
-  //     console.log('follow id', campaign.follower_id)
-
-  //     //get total of donations
-  //     var amounts = _.pluck(campaign.contributors, 'amount');
-  //     campaign.donated = _.reduce(amounts, function(total, n) {
-  //       return total + n;
-  //     }, 0);
-  //     console.log($scope.campaign)
-  //   });
-
-  // };
-
-  $scope.deleteCampaign = function(){
-    //add an "are you sure" popup
-    Campaign.deleteCampaign($scope.id);
-    //TODO: fix refresh after campaign deletion
-    $state.go($ionicHistory.backView().stateName, {}, {reload: true});
+  $scope.addComment = function(comment){
+    comment.user_id = $scope.currentUser._id;
+    comment.profile_pic = $scope.currentUser.profile_pic;
+    comment.username = $scope.currentUser.name;
+    comment.campaign_id = $scope.id;
+    console.log(comment)
+    Campaign.addComment(comment)
+      .success(function(data){
+        $scope.campaign.comments.push(data);
+      });
+    //reset comment
+    $scope.comment = {};
   };
+
+  
 
     //$scope.getCampaignDetails($scope.campaign);
     $scope.getCampaign();
