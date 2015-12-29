@@ -47,27 +47,49 @@ angular.module('app.routes', [])
     }
   })
 
-  .state('tabsController.myCampaigns', {
-    url: '/mycampaign',
-    parent: 'tabsController',
+  .state('tabsController.editCampaign', {
+    url: '/editcampaign/:id',
     views: {
-      'myTab': {
-        templateUrl: 'app/campaign/myCampaigns.html',
-        controller: 'myCampaignsCtrl'
+      'homeTab@tabsController': {
+        templateUrl: 'app/campaign/createCampaign.html',
+        controller: 'createCampaignCtrl',
+        params: ['id']
       }
     }
   })
 
-  .state('tabsController.myCampaignProfile', {
-    url: '/mycampaign/:id',
-    views: {
-      'myTab@tabsController': {
-        templateUrl: 'app/campaign/campaignProfile.html',
-        controller: 'campaignProfileCtrl',
-        params: ['id'],
-      }
-    }
-  })
+  // .state('tabsController.myCampaigns', {
+  //   url: '/mycampaign',
+  //   parent: 'tabsController',
+  //   views: {
+  //     'myTab': {
+  //       templateUrl: 'app/campaign/myCampaigns.html',
+  //       controller: 'myCampaignsCtrl'
+  //     }
+  //   }
+  // })
+
+  // .state('tabsController.myCampaignProfile', {
+  //   url: '/mycampaign/:id',
+  //   views: {
+  //     'myTab@tabsController': {
+  //       templateUrl: 'app/campaign/campaignProfile.html',
+  //       controller: 'campaignProfileCtrl',
+  //       params: ['id']
+  //     }
+  //   }
+  // })
+
+  // .state('tabsController.editMyCampaign', {
+  //   url: '/editcampaign/:id',
+  //   views: {
+  //     'myTab@tabsController': {
+  //       templateUrl: 'app/campaign/createCampaign.html',
+  //       controller: 'createCampaignCtrl',
+  //       params: ['id']
+  //     }
+  //   }
+  // })
 
   .state('tabsController.createCampaign', {
     url: '/startcampaign',
@@ -81,18 +103,27 @@ angular.module('app.routes', [])
   })
 
   .state('tabsController.newCampaignProfile', {
-    url: '/newcampaign/:id',
+    url: '/new-campaign/:id',
     views: {
       'createTab@tabsController': {
         templateUrl: 'app/campaign/campaignProfile.html',
         controller: 'campaignProfileCtrl',
         params: ['id']
         
-        
       }
     }
   })
 
+  // .state('tabsController.editCampaign', {
+  //   url: '/editcampaign/:id',
+  //   views: {
+  //     'createTab': {
+  //       templateUrl: 'app/campaign/createCampaign.html',
+  //       controller: 'createCampaignCtrl',
+  //       params: ['id']
+  //     }
+  //   }
+  // })
 
 
   .state('tabsController.myAccount', {

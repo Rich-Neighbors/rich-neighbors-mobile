@@ -12,6 +12,7 @@ angular.module('app', ['ionic', 'app.routes', 'app.services', 'app.directives'])
   })
 
 .run(function($rootScope, $state, AuthService, AUTH_EVENTS) {
+
   $rootScope.$on('$stateChangeStart', function(event, next, nextParams, fromState) {
 
     if (!AuthService.isAuthenticated()) {

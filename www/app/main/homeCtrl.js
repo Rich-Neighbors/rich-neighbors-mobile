@@ -1,12 +1,17 @@
 angular.module('app').controller('homeCtrl', function($scope, $state, $http, Campaign) {
-  $scope.campaigns = [];
+  $scope.Campaign = Campaign;
   $scope.loaded = false;
-
   
+  $scope.changeFilter = function(filter){
+    $scope.filter = filter;
+    $scope.loaded = false;
+    $scope.getCampaigns();
+  };
+
   $scope.getCampaigns = function(){
-    Campaign.getCampaigns().then(function(data){
-      //console.log(data);
-      $scope.campaigns = data;
+    Campaign.getCampaigns($scope.filter).then(function(data){
+      //not sure why this assignement is needed
+      //Campaign.campaigns = Campaign.showCampaigns();
       $scope.loaded = true;
       $scope.$broadcast('scroll.refreshComplete');
     });
@@ -19,6 +24,6 @@ angular.module('app').controller('homeCtrl', function($scope, $state, $http, Cam
   };
 
   //initial loading of campaigns
-  $scope.getCampaigns();
+  $scope.getCampaigns($scope.filter);
 
 }); 

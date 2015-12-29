@@ -1,4 +1,7 @@
 <ion-view title="Campaign">
+  <ion-nav-buttons side="right">
+    <button ng-if="isOwner(campaign)" ng-click="editCampaign(campaign)" class="button button-clear">Edit</button>
+  </ion-nav-buttons>
   <ion-content overflow-scroll="true" padding="'true'" class="has-header">
     <h1 style="text-align: center">{{campaign.title}}</h1>
 
@@ -18,28 +21,44 @@
         <p>{{campaign.description}}</p>
       </div>
     </div>
-    <div class="list" >
-      <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments | orderBy:'-created_at'"">
+    <!-- supplies list -->
+    <div class="item" ng-if="campaign.volunteers[0]._id">
+      <h2>Volunteers Needed</h2>
+        <p><span ng-repeat="volunteer in campaign.volunteers">
+          {{ volunteer.name}}: <b>{{ volunteer.quantity }}</b>
+        </span></p>
+      </div>
+    </div>
+
+    <!-- supplies list -->
+    <div class="item" ng-if="campaign.items[0]._id">
+      <h2>Supplies Needed</h2>
+        <p><span ng-repeat="item in campaign.items">
+          {{ item.name}}: <b>{{ item.quantity }}</b>
+        </span></p>
+      </div>
+    </div>
+
+    <!-- comments list -->
+    <div class="list" ng-if="campaign.comments[0]._id">
+      <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments | orderBy:'-created_at'">
         <img ng-src="{{comment.profile_pic}}">
         <h2>{{comment.text}}</h2>
         <h3>{{comment.username}}</h3>
         <p>{{comment.created_at | date:'short' }}</p>
       </div>
     </div>
-    
-    <div class="list">
-      <a class="item item-avatar" href="#">
-        <img src="https://scontent.xx.fbcdn.net/hprofile-xtp1/v/t1.0-1/p320x320/11391432_10203832951975075_4543799157993077748_n.jpg?oh=f5d82f3673bdb64f2283e0f65efc078a&oe=5720CECA">
-        <h2>Maria Fretes</h2>
+
+    <!-- contribution list -->
+    <div class="list" >
+      <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments | orderBy:'-created_at'">
+        <img ng-src="{{comment.profile_pic}}">
+        <h2>{{comment.username}}</h2>
         <h1>$125</h1>
-        <p>Estou aqui torcendo p sua recuperação!!! Q o papai do céu e os anjinhos te protejam nesse momento!! Um gde bjo</p>
-      </a>
-      <a class="item item-avatar" href="#">
-        <h2>Jorge Medoza</h2>
-        <h2>$30</h2>
-        <p>6 hours ago</p>
-      </a>
+        <p>{{comment.created_at | date:'short' }}</p>
+      </div>
     </div>
+    
     <div>
       <h3 style="text-align: center">Join this campaign:</h3>
     </div>
@@ -56,6 +75,6 @@
       <a href="http://www.facebook.com/LeBron" class="button button-positive button-block icon ion-social-facebook"></a>
       <a href="http://www.instagram.com/kingjames/" class="button button-royal button-block icon ion-social-instagram"></a>
     </div>
-    <button ng-if="isOwner()" ng-click="deleteCampaign()" class="button button-assertive button-block ">Delete</button>
+    <button ng-if="isOwner(campaign)" ng-click="deleteCampaign()" class="button button-assertive button-block ">Delete</button>
   </ion-content>
 </ion-view>

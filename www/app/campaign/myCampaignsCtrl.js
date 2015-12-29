@@ -1,4 +1,4 @@
-angular.module('app').controller('myCampaignsCtrl', function($scope, $state, Campaign) {
+angular.module('app').controller('myCampaignsCtrl', function($scope, $state, Campaign, AuthService) {
 
 	$scope.campaigns = [];
 	$scope.loaded = false;
