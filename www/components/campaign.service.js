@@ -24,6 +24,14 @@ angular.module('app.services', [])
     return campaigns[selectIndex];
   };
 
+  var daysLeft = function(campaign){
+    var today = new Date();
+    var start = new Date(campaign.created_at);
+    var expired = today - start;
+    var expiredDays = Math.ceil(expired / (24 * 60 * 60 * 1000) );
+    return campaign.days - expiredDays;
+  };
+
   var getCampaigns = function(filter) {
     //set api call by filter
     var apiUrl = '/api/campaigns/';
@@ -69,7 +77,6 @@ angular.module('app.services', [])
 
     var links = campaign._links.slice(1);
     apiCall.apiExtend(campaign, links, function(){
-      //$scope.campaign = campaign;  
 
       //determine if following campaign
       var currentUser = AuthService.getCurrentUser();
@@ -273,7 +280,8 @@ angular.module('app.services', [])
     updateCampaign: updateCampaign,
     deleteCampaignVolunteer: deleteCampaignVolunteer,
     deleteCampaignItem: deleteCampaignItem,
-    addComment: addComment
+    addComment: addComment,
+    daysLeft: daysLeft
 
   };
 

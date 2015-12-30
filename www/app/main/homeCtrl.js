@@ -10,15 +10,12 @@ angular.module('app').controller('homeCtrl', function($scope, $state, $http, Cam
 
   $scope.getCampaigns = function(){
     Campaign.getCampaigns($scope.filter).then(function(data){
-      //not sure why this assignement is needed
-      //Campaign.campaigns = Campaign.showCampaigns();
       $scope.loaded = true;
       $scope.$broadcast('scroll.refreshComplete');
     });
   };
 
   $scope.viewCampaign = function(campaign){
-  	//console.log(campaign._id);
     Campaign.selectedCampaign = campaign;
   	$state.go('tabsController.campaignProfile', {id: campaign._id, campaign: campaign} );
   };

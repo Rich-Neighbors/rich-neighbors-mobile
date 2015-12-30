@@ -1,19 +1,19 @@
 angular.module('app.directives', [])
 
-// .directive('viewCampaign', [function(){
-//   return {
-//     restrict: 'AE',
-//     scope: true,
-//     templateUrl: 'components/viewCampaign.html'
-//   };
-
-// }])
-
 .directive('campaignListItem', function(){
   return {
     restrict: 'AE',
     scope: true,
     templateUrl: 'components/campaignListItem.html'
+  };
+
+})
+
+.directive('fundingBar', function(){
+  return {
+    restrict: 'AE',
+    scope: true,
+    templateUrl: 'components/fundingBar.html'
   };
 
 })

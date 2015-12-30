@@ -3,17 +3,16 @@
     <button ng-if="isOwner(campaign)" ng-click="editCampaign(campaign)" class="button button-clear">Edit</button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="true" padding="'true'" class="has-header">
-    <h1 style="text-align: center">{{campaign.title}}</h1>
     <img style="width:100%" ng-src="{{campaign.picture_url}}">
+
+    <h1 style="text-align: center">{{campaign.title}}</h1>
+
+    <funding-bar></funding-bar>
+    
     <div class="card">
-      <div class="meter">
-        <span style="width: 25%"></span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="item item-icon-right" href="#">
-        Follow
-        <i id="like" ng-class="{'icon ion-ios7-heart': campaign.following, 'icon ion-ios7-heart-outline': !campaign.following}" ng-click="followCampaign(campaign)"></i>
+      <div class="item item-balanced item-icon-right following-bar">
+        <h2><b>{{ {true: 'Following', false: 'Follow'}[campaign.following] }}</b></h2>
+        <i id="like" ng-class="{'icon ion-ios-checkmark': campaign.following, 'icon ion-ios-plus': !campaign.following}" ng-click="followCampaign(campaign)"></i>
       </div>
       <div class="item item-text-wrap update">
         <p>{{campaign.description}}</p>

@@ -1,0 +1,17 @@
+<div class="cause-info-bar" data-goal="20%">
+    <span style="{{'width:' + (campaign.comments.length * 10 || 20) + '%'}}"></span>
+  </div>
+  <table class="campaign-stats">
+  	<tr>
+  		<td><b>20%</b></td>
+  		<td><b>{{campaign.goal * 0.2 | currency}}</b></td>
+  		<td><b>15</b></td>
+  		<td><b>{{Campaign.daysLeft(campaign)}}</b></td>
+  	</tr>
+  	<tr>
+  		<th>funded</th>
+  		<th>pledged</th>
+  		<th>volunteers</th>
+  		<th>days left</th>
+  	</tr>
+  </table>

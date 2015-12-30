@@ -3,25 +3,6 @@
   
   <h2>{{campaign.title}}</h2>
   <p>{{ (campaign.address.zip || campaign.address.country) }}<p>
-  <div class="cause-info-bar" data-goal="20%">
-    <span style="{{'width:' + (campaign.comments.length * 10 || 20) + '%'}}"></span>
-  </div>
-  <table class="campaign-stats">
-  	<tr>
-  		<td><b>20%</b></td>
-  		<td><b>{{campaign.goal * 0.2 | currency}}</b></td>
-  		<td><b>15</b></td>
-  		<!-- <td><b>36</b></td>
-  		<td><b>17</b></td> -->
-  	</tr>
-  	<tr>
-  		<th>funded</th>
-  		<th>pledged</th>
-  		<th>volunteers</th>
-  		<!-- <th>contributors</th>
-  		<th>days left</th> -->
-  	</tr>
-  </table>
-  <!-- <i id="like" ng-class="{'icon ion-ios7-heart': liked, 'icon ion-ios7-heart-outline': !liked}" ng-click="liked=!liked" ng-click="like(camp)"></i> -->
+  <funding-bar></funding-bar>
 </ion-item>
 
