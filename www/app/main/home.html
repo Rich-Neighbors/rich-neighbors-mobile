@@ -1,11 +1,6 @@
 <ion-view title="Home">
   <ion-content overflow-scroll="true" padding="true" class="has-header">
-    <!-- <h4>Welcome to {{location}}</h4> -->
-    <!-- <div class="item range">
-      Location:
-      <input type="range" name="volume">
-      <i class="icon ion-ios-location"></i>
-    </div> -->
+  
     <div class="button-bar" ng-init="selected=1">
       <button ng-class="{'active': !filter}" class="button button-stable button-block ion-ios-location large-icon" ng-click="changeFilter()"></button>
       <button ng-class="{'active': filter === 'time'}" class="button button-stable button-block ion-clock large-icon"></button>

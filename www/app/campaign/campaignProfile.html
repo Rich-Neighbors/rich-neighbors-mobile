@@ -4,9 +4,7 @@
   </ion-nav-buttons>
   <ion-content overflow-scroll="true" padding="'true'" class="has-header">
     <h1 style="text-align: center">{{campaign.title}}</h1>
-
-        <img style="width:100%" ng-src="{{campaign.picture_url}}">
-
+    <img style="width:100%" ng-src="{{campaign.picture_url}}">
     <div class="card">
       <div class="meter">
         <span style="width: 25%"></span>
@@ -21,55 +19,22 @@
         <p>{{campaign.description}}</p>
       </div>
     </div>
-    <!-- supplies list -->
+    <!-- volunteers list -->
     <div class="item" ng-if="campaign.volunteers[0]._id">
       <h2>Volunteers Needed</h2>
-        <p><span ng-repeat="volunteer in campaign.volunteers">
+      <p><span ng-repeat="volunteer in campaign.volunteers">
           {{ volunteer.name}}: <b>{{ volunteer.quantity }}</b>
         </span></p>
-      </div>
     </div>
-
     <!-- supplies list -->
     <div class="item" ng-if="campaign.items[0]._id">
       <h2>Supplies Needed</h2>
-        <p><span ng-repeat="item in campaign.items">
+      <p><span ng-repeat="item in campaign.items">
           {{ item.name}}: <b>{{ item.quantity }}</b>
         </span></p>
-      </div>
-    </div>
-    
-    <!-- comments list -->
-    <div class="list" ng-if="campaign.comments[0]._id">
-      <!-- comment form -->
-      <div class="item item-avatar" ng-if="isAuthenticated()">
-        <img ng-src="{{currentUser.profile_pic}}">
-        <label class="item item-input item-stacked-label">
-          <textarea type="text" ng-model="comment.text" rows="8" cols="10" placeholder="Add a comment..."></textarea>
-        </label>
-      <div class="button-bar">
-        <button ng-click="addComment(comment)" class="button button-balanced button-block">Add Comment</button>
-      </div>
-        </div>
-
-      <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments | orderBy:'-created_at'">
-        <img ng-src="{{comment.profile_pic}}">
-        <h2>{{comment.text}}</h2>
-        <h3>{{comment.username}}</h3>
-        <p>{{comment.created_at | date:'short' }}</p>
-      </div>
     </div>
 
-    <!-- contribution list -->
-    <div class="list" >
-      <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments | orderBy:'-created_at'">
-        <img ng-src="{{comment.profile_pic}}">
-        <h2>{{comment.username}}</h2>
-        <h1>$125</h1>
-        <p>{{comment.created_at | date:'short' }}</p>
-      </div>
-    </div>
-    
+
     <div>
       <h3 style="text-align: center">Join this campaign:</h3>
     </div>
@@ -86,6 +51,37 @@
       <a href="http://www.facebook.com/LeBron" class="button button-positive button-block icon ion-social-facebook"></a>
       <a href="http://www.instagram.com/kingjames/" class="button button-royal button-block icon ion-social-instagram"></a>
     </div>
+
+    <!-- comments list -->
+    <div class="list" ng-if="campaign.comments[0]._id">
+      <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments | orderBy:'-created_at'">
+        <img ng-src="{{comment.profile_pic}}">
+        <h2>{{comment.text}}</h2>
+        <h3>{{comment.username}}</h3>
+        <p>{{comment.created_at | date:'short' }}</p>
+      </div>
+    </div>
+
+     <!-- comment form -->
+      <div class="item item-avatar" ng-if="isAuthenticated()">
+        <img ng-src="{{currentUser.profile_pic}}">
+        <label class="item item-input item-stacked-label">
+          <textarea type="text" ng-model="comment.text" rows="8" cols="10" placeholder="Add a comment..."></textarea>
+        </label>
+        <div class="button-bar">
+          <button ng-click="addComment(comment)" class="button button-balanced button-block">Add Comment</button>
+        </div>
+      </div>
+    <!-- contribution list -->
+    <div class="list">
+      <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments | orderBy:'-created_at'">
+        <img ng-src="{{comment.profile_pic}}">
+        <h2>{{comment.username}}</h2>
+        <h1>$125</h1>
+        <p>{{comment.created_at | date:'short' }}</p>
+      </div>
+    </div>
+    
     <button ng-if="isOwner(campaign)" ng-click="deleteCampaign()" class="button button-assertive button-block ">Delete</button>
   </ion-content>
 </ion-view>
