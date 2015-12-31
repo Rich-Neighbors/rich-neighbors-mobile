@@ -64,7 +64,7 @@ angular.module('app.services', [])
       } else {
         setCampaigns(data);
         data.forEach(function(campaign){
-          getCampaignDetails(campaign);
+          getCampaignDetails(campaign, 'contributors');
         });
       }
       console.log(campaigns);
@@ -75,9 +75,13 @@ angular.module('app.services', [])
     });
   };
 
-  var getCampaignDetails = function(campaign){
+  var getCampaignDetails = function(campaign, filter){
 
     var links = campaign._links.slice(1);
+    if (filter){
+      links = [ campaign._links[3] ];
+      //console.log('links', links);
+    }
     apiCall.apiExtend(campaign, links, function(){
 
       //determine if following campaign
@@ -90,6 +94,14 @@ angular.module('app.services', [])
 
       //get total of donations
       var amounts = _.pluck(campaign.contributors, 'amount');
+
+      // var amounts = _.map(
+      //   _.where(campaign.contributors, {type : undefined}), 
+      //       function(contributor) {
+      //           return contriubtor.amount;
+      //       }
+      // );
+
       campaign.donated = _.reduce(amounts, function(total, n) {
         return total + n;
       }, 0);

@@ -53,11 +53,13 @@
     
     <!-- contribution list -->
     <div class="list">
-      <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments | orderBy:'-created_at'">
-        <img ng-src="{{comment.profile_pic}}">
-        <h2>{{comment.username}}</h2>
-        <h1>$125</h1>
-        <p>{{comment.created_at | date:'short' }}</p>
+      <div class="item" ng-repeat="contributor in campaign.contributors | orderBy:'-created_at'">
+        <h2>{{contributor.user_id.name}}</h2>
+        <h1 ng-if="!contributor.type">{{contributor.amount | currency }}</h1>
+        <h1 ng-if="contributor.type">{{contributor.amount }}</h1>
+        <h2 ng-if="contributor.type === 'Supply'">{{contributor.item_id.name}}</h2>
+        <h2 ng-if="contributor.type === 'Volunteer'">{{contributor.volunteer_id.name }}</h2>
+        <p>{{contributor.created_at | date:'short' }}</p>
       </div>
     </div>
 
