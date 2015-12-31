@@ -4,7 +4,7 @@ angular.module('app.services', [])
 
   var selectIndex = 0;
   var campaigns = [];
-  var myCampaigns = [];
+  var newCampaignId;
   var selectedCampaigns = 'campaigns';
   var selectedCampaign;
 
@@ -24,11 +24,25 @@ angular.module('app.services', [])
     return campaigns[selectIndex];
   };
 
+  var daysLeft = function(campaign){
+    var today = new Date();
+    var start = new Date(campaign.created_at);
+    var expired = today - start;
+    var expiredDays = Math.ceil(expired / (24 * 60 * 60 * 1000) );
+    return campaign.days - expiredDays;
+  };
+
+  var donatedPercent = function(campaign){
+    return campaign.donated / campaign.goal * 100;
+  };
+
   var getCampaigns = function(filter) {
     //set api call by filter
     var apiUrl = '/api/campaigns/';
     if (filter === 'campaigns' || filter === 'followers'){
       apiUrl = '/api/users/me/' + filter;
+    } else if (filter === 'time') {
+      //ignore
     } else if (filter){
       apiUrl += filter;
       var id = filter;
@@ -46,16 +60,12 @@ angular.module('app.services', [])
 
       if (id){
         select(id);
-        //if first load, replace local early
-        // if (!campaigns[selectIndex].loaded) {
-        //   var oldCampaign = campaigns[selectIndex];
-        //   _.extend(oldCampaign, data);
-        //   getCampaignDetails(oldCampaign);
-        // } else {
-          getCampaignDetails(data);
-        //}
+        getCampaignDetails(data);
       } else {
-        setCampaigns(data); 
+        setCampaigns(data);
+        data.forEach(function(campaign){
+          getCampaignDetails(campaign, 'contributors');
+        });
       }
       console.log(campaigns);
       //return data;
@@ -65,11 +75,14 @@ angular.module('app.services', [])
     });
   };
 
-  var getCampaignDetails = function(campaign){
+  var getCampaignDetails = function(campaign, filter){
 
     var links = campaign._links.slice(1);
+    if (filter){
+      links = [ campaign._links[3] ];
+      //console.log('links', links);
+    }
     apiCall.apiExtend(campaign, links, function(){
-      //$scope.campaign = campaign;  
 
       //determine if following campaign
       var currentUser = AuthService.getCurrentUser();
@@ -77,19 +90,27 @@ angular.module('app.services', [])
          campaign.follower_id = follower._id;
          return follower.user_id === currentUser._id; 
       });
-      console.log('follow id', campaign.follower_id)
+      //console.log('follow id', campaign.follower_id)
 
       //get total of donations
       var amounts = _.pluck(campaign.contributors, 'amount');
+
+      // var amounts = _.map(
+      //   _.where(campaign.contributors, {type : undefined}), 
+      //       function(contributor) {
+      //           return contriubtor.amount;
+      //       }
+      // );
+
       campaign.donated = _.reduce(amounts, function(total, n) {
         return total + n;
       }, 0);
       
       campaign.loaded = true;
       //replace local campaign with retrieved
-      var oldCampaign = campaigns[selectIndex];
-      _.extend(oldCampaign, campaign);
-      console.log('full campaign', campaign)
+      //var oldCampaign = campaigns[selectIndex];
+      //_.extend(oldCampaign, campaign);
+      //console.log('full campaign', campaign)
     });
 
   };
@@ -273,7 +294,9 @@ angular.module('app.services', [])
     updateCampaign: updateCampaign,
     deleteCampaignVolunteer: deleteCampaignVolunteer,
     deleteCampaignItem: deleteCampaignItem,
-    addComment: addComment
+    addComment: addComment,
+    daysLeft: daysLeft,
+    newCampaignId: newCampaignId
 
   };
 

@@ -5,6 +5,7 @@ angular.module('app').controller('loginCtrl', function($scope, AuthService, $ion
     AuthService.login(data.username, data.password)
     	.success(function(res) {
         $state.go('tabsController.home', {}, {reload: true});
+        $scope.data = {};
       })
     	.error(function(err) {
         var alertPopup = $ionicPopup.alert({

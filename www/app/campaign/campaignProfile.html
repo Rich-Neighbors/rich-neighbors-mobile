@@ -3,55 +3,68 @@
     <button ng-if="isOwner(campaign)" ng-click="editCampaign(campaign)" class="button button-clear">Edit</button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="true" padding="'true'" class="has-header">
+    <img style="width:100%" ng-src="{{ (campaign.images[0].link || campaign.picture_url)}}">
+
     <h1 style="text-align: center">{{campaign.title}}</h1>
 
-        <img style="width:100%" ng-src="{{campaign.picture_url}}">
-
+    <funding-bar></funding-bar>
+    
     <div class="card">
-      <div class="meter">
-        <span style="width: 25%"></span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="item item-icon-right" href="#">
-        Follow
-        <i id="like" ng-class="{'icon ion-ios7-heart': campaign.following, 'icon ion-ios7-heart-outline': !campaign.following}" ng-click="followCampaign(campaign)"></i>
+      <div class="item item-balanced item-icon-right following-bar">
+        <h2><b>{{ {true: 'Following', false: 'Follow'}[campaign.following] }}</b></h2>
+        <i id="like" ng-class="{'icon ion-ios-checkmark': campaign.following, 'icon ion-ios-plus': !campaign.following}" ng-click="followCampaign(campaign)"></i>
       </div>
       <div class="item item-text-wrap update">
         <p>{{campaign.description}}</p>
       </div>
     </div>
-    <!-- supplies list -->
+    <!-- volunteers list -->
     <div class="item" ng-if="campaign.volunteers[0]._id">
       <h2>Volunteers Needed</h2>
-        <p><span ng-repeat="volunteer in campaign.volunteers">
+      <p><span ng-repeat="volunteer in campaign.volunteers">
           {{ volunteer.name}}: <b>{{ volunteer.quantity }}</b>
         </span></p>
-      </div>
     </div>
-
     <!-- supplies list -->
     <div class="item" ng-if="campaign.items[0]._id">
       <h2>Supplies Needed</h2>
-        <p><span ng-repeat="item in campaign.items">
+      <p><span ng-repeat="item in campaign.items">
           {{ item.name}}: <b>{{ item.quantity }}</b>
         </span></p>
-      </div>
+    </div>
+
+    <div>
+      <h3 style="text-align: center">Share</h3>
+    </div>
+    <div class="button-bar">
+      <a href="#" class="button button-calm button-block icon ion-social-twitter"></a>
+      <a href="#" class="button button-positive button-block icon ion-social-facebook"></a>
+      <a href="#" class="button button-royal button-block icon ion-social-instagram"></a>
+    </div>
+
+    <div>
+      <h3 style="text-align: center">Join In</h3>
+    </div>
+    <div class="button-bar">
+      <button class="button button-stable button-block  icon ">Money</a>
+      <button class="button button-stable button-block ">Time</a>
+      <button class="button button-stable button-block ">Supplies</a>
     </div>
     
+    <!-- contribution list -->
+    <div class="list">
+      <div class="item" ng-repeat="contributor in campaign.contributors | orderBy:'-created_at'">
+        <h2>{{contributor.user_id.name}}</h2>
+        <h1 ng-if="!contributor.type">{{contributor.amount | currency }}</h1>
+        <h1 ng-if="contributor.type">{{contributor.amount }}</h1>
+        <h2 ng-if="contributor.type === 'Supply'">{{contributor.item_id.name}}</h2>
+        <h2 ng-if="contributor.type === 'Volunteer'">{{contributor.volunteer_id.name }}</h2>
+        <p>{{contributor.created_at | date:'short' }}</p>
+      </div>
+    </div>
+
     <!-- comments list -->
     <div class="list" ng-if="campaign.comments[0]._id">
-      <!-- comment form -->
-      <div class="item item-avatar" ng-if="isAuthenticated()">
-        <img ng-src="{{currentUser.profile_pic}}">
-        <label class="item item-input item-stacked-label">
-          <textarea type="text" ng-model="comment.text" rows="8" cols="10" placeholder="Add a comment..."></textarea>
-        </label>
-      <div class="button-bar">
-        <button ng-click="addComment(comment)" class="button button-balanced button-block">Add Comment</button>
-      </div>
-        </div>
-
       <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments | orderBy:'-created_at'">
         <img ng-src="{{comment.profile_pic}}">
         <h2>{{comment.text}}</h2>
@@ -60,32 +73,18 @@
       </div>
     </div>
 
-    <!-- contribution list -->
-    <div class="list" >
-      <div class="item item-avatar" href="#" ng-repeat="comment in campaign.comments | orderBy:'-created_at'">
-        <img ng-src="{{comment.profile_pic}}">
-        <h2>{{comment.username}}</h2>
-        <h1>$125</h1>
-        <p>{{comment.created_at | date:'short' }}</p>
+     <!-- comment form -->
+      <div class="item item-avatar" ng-if="isAuthenticated()">
+        <img ng-src="{{currentUser.profile_pic}}">
+        <label class="item item-input item-stacked-label">
+          <textarea type="text" ng-model="comment.text" rows="8" cols="10" placeholder="Add a comment..."></textarea>
+        </label>
+        <div class="button-bar">
+          <button ng-click="addComment(comment)" class="button button-balanced button-block">Add Comment</button>
+        </div>
       </div>
-    </div>
     
-    <div>
-      <h3 style="text-align: center">Join this campaign:</h3>
-    </div>
-    <div class="button-bar">
-      <a href="#/donatemoney" class="button button-balanced button-block  icon ">Money</a>
-      <a href="#/volunteer" class="button button-balanced button-block ">Time</a>
-      <a href="#/supplylist" class="button button-balanced button-block ">Supplies</a>
-    </div>
-    <div>
-      <h3 style="text-align: center">Share:</h3>
-    </div>
-    <div class="button-bar">
-      <a href="http://www.twitter.com/KingJames" class="button button-calm button-block icon ion-social-twitter"></a>
-      <a href="http://www.facebook.com/LeBron" class="button button-positive button-block icon ion-social-facebook"></a>
-      <a href="http://www.instagram.com/kingjames/" class="button button-royal button-block icon ion-social-instagram"></a>
-    </div>
+    
     <button ng-if="isOwner(campaign)" ng-click="deleteCampaign()" class="button button-assertive button-block ">Delete</button>
   </ion-content>
 </ion-view>

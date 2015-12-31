@@ -29,7 +29,7 @@ angular.module('app.routes', [])
     views: {
       'homeTab': {
         templateUrl: 'app/main/home.html',
-        controller: 'homeCtrl'
+        controller: 'homeCtrl',
       }
     }
   })

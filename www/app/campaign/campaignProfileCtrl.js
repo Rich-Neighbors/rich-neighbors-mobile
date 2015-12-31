@@ -12,7 +12,7 @@ angular.module('app').controller('campaignProfileCtrl', function($scope, $http, 
 
   $scope.isOwner = function(campaign){
     if (campaign.user_id){
-      return campaign.user_id._id === $scope.currentUser._id;
+      return campaign.user_id === $scope.currentUser._id;
     }
   };
 

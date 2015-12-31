@@ -1,4 +1,4 @@
-angular.module('app').controller('createCampaignCtrl', function($scope, $state, $ionicHistory, $ionicConfig, Campaign, Camera) {
+angular.module('app').controller('createCampaignCtrl', function($scope, $location, $state, $ionicHistory, $ionicConfig, Campaign, Camera) {
   
   //initialize form
   $scope.resetForm = function(){
@@ -74,6 +74,7 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
     //save campaign
     Campaign.createCampaign($scope.campaign, $scope.volunteers, $scope.supplies)
       .then(function(res){
+        Campaign.newCampaignId = res.data._id;
         $scope.viewCampaign(res.data);
       })
       .catch(function(err){
@@ -87,6 +88,8 @@ angular.module('app').controller('createCampaignCtrl', function($scope, $state, 
   $scope.viewCampaign = function(campaign){
     //Campaign.selectedCampaign = campaign;
     $state.go('tabsController.newCampaignProfile', { id: campaign._id } );
+    //$state.go('tabsController.home', {}, {reload:true});
+    //$location.path('/');
   };
 
   //TODO: fix error with camera plugin install
