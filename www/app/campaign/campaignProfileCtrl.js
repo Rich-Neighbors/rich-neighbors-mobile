@@ -11,7 +11,7 @@ angular.module('app').controller('campaignProfileCtrl', function($scope, $http, 
   //$scope.gotDetails = false;
 
   $scope.isOwner = function(campaign){
-    if (campaign.user_id){
+    if (campaign && campaign.user_id){
       return campaign.user_id._id === $scope.currentUser._id;
     }
   };

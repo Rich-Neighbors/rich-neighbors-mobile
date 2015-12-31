@@ -4,7 +4,7 @@ angular.module('app.services', [])
 
   var selectIndex = 0;
   var campaigns = [];
-  var myCampaigns = [];
+  var newCampaignId;
   var selectedCampaigns = 'campaigns';
   var selectedCampaign;
 
@@ -32,11 +32,17 @@ angular.module('app.services', [])
     return campaign.days - expiredDays;
   };
 
+  var donatedPercent = function(campaign){
+    return campaign.donated / campaign.goal * 100;
+  };
+
   var getCampaigns = function(filter) {
     //set api call by filter
     var apiUrl = '/api/campaigns/';
     if (filter === 'campaigns' || filter === 'followers'){
       apiUrl = '/api/users/me/' + filter;
+    } else if (filter === 'time') {
+      //ignore
     } else if (filter){
       apiUrl += filter;
       var id = filter;
@@ -54,16 +60,12 @@ angular.module('app.services', [])
 
       if (id){
         select(id);
-        //if first load, replace local early
-        // if (!campaigns[selectIndex].loaded) {
-        //   var oldCampaign = campaigns[selectIndex];
-        //   _.extend(oldCampaign, data);
-        //   getCampaignDetails(oldCampaign);
-        // } else {
-          getCampaignDetails(data);
-        //}
+        getCampaignDetails(data);
       } else {
-        setCampaigns(data); 
+        setCampaigns(data);
+        data.forEach(function(campaign){
+          getCampaignDetails(campaign);
+        });
       }
       console.log(campaigns);
       //return data;
@@ -84,7 +86,7 @@ angular.module('app.services', [])
          campaign.follower_id = follower._id;
          return follower.user_id === currentUser._id; 
       });
-      console.log('follow id', campaign.follower_id)
+      //console.log('follow id', campaign.follower_id)
 
       //get total of donations
       var amounts = _.pluck(campaign.contributors, 'amount');
@@ -94,9 +96,9 @@ angular.module('app.services', [])
       
       campaign.loaded = true;
       //replace local campaign with retrieved
-      var oldCampaign = campaigns[selectIndex];
-      _.extend(oldCampaign, campaign);
-      console.log('full campaign', campaign)
+      //var oldCampaign = campaigns[selectIndex];
+      //_.extend(oldCampaign, campaign);
+      //console.log('full campaign', campaign)
     });
 
   };
@@ -281,7 +283,8 @@ angular.module('app.services', [])
     deleteCampaignVolunteer: deleteCampaignVolunteer,
     deleteCampaignItem: deleteCampaignItem,
     addComment: addComment,
-    daysLeft: daysLeft
+    daysLeft: daysLeft,
+    newCampaignId: newCampaignId
 
   };
 

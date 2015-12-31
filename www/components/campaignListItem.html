@@ -1,5 +1,5 @@
 <ion-item  class="item-thumbnail-left campaign-list-item"  ng-click="viewCampaign(campaign)">
-  <img ng-src="{{campaign.picture_url}}">
+  <img ng-src="{{(campaign.images[0].link || campaign.picture_url)}}">
   
   <h2>{{campaign.title}}</h2>
   <p>{{ (campaign.address.zip || campaign.address.country) }}<p>

@@ -86,9 +86,14 @@ h2.ng-binding {
 	padding: 0px;
 }
 
+.campaign-stats td {
+	color: rgb(46, 66, 82);
+	font-size: 1.2em;
+}
+
 .campaign-stats {
 	margin: 0px;
-	font-size: .8em;
+	
 	text-align: left;
 }
 
