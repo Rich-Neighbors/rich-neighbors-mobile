@@ -1,7 +1,7 @@
-Ionic App Base
+Rich Neighbors Mobile
 =====================
 
-A starting project for Ionic that optionally supports using custom SCSS.
+A web and mobile community-focused crowdfunding platform for pooling money, resources, and volunteers.
 
 ## Using this project
 
